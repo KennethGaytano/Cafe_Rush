@@ -23,7 +23,12 @@
           <button class="button button--secondary" id="how-to-button" type="button">
             How to play
           </button>
+          <button class="button button--secondary" id="high-scores-button" type="button">High Scores</button>
+          <button class="button button--secondary sound-toggle" id="menu-sound-button" type="button" aria-pressed="false">
+            <span aria-hidden="true">♫</span> Sound: Off
+          </button>
         </nav>
+        <p class="menu-status" id="menu-status" role="status" aria-live="polite"></p>
         <p class="menu-note">Make every cup count.</p>
       </div>
       <p class="menu-credit">A warm welcome is always brewing</p>
@@ -221,11 +226,51 @@
       <h2 id="pause-title">Shift paused</h2>
       <p>Your shift timer is stopped. Ready to get back to the counter?</p>
       <div class="notice-actions">
+        <button class="button button--secondary sound-toggle" id="pause-sound-button" type="button" aria-pressed="false">
+          <span aria-hidden="true">♫</span> Sound: Off
+        </button>
         <button class="button button--primary" id="resume-button" type="button">Resume shift</button>
         <button class="button button--secondary" id="restart-button" type="button">Restart shift</button>
         <button class="button button--secondary" id="exit-game-button" type="button">Main menu</button>
       </div>
     </dialog>
+
+    <dialog class="notice-dialog scores-dialog" id="high-scores-dialog" aria-labelledby="high-scores-title">
+      <div class="notice-icon" aria-hidden="true">★</div>
+      <p class="section-kicker">Your best cafe day</p>
+      <h2 id="high-scores-title">High Scores</h2>
+      <p class="high-score-value"><strong id="menu-high-score">0</strong><span>best score</span></p>
+      <p class="storage-notice" id="high-score-storage-notice" role="status" aria-live="polite"></p>
+      <div class="notice-actions">
+        <button class="button button--primary" id="close-high-scores-button" type="button">Back to menu</button>
+      </div>
+    </dialog>
+
+    <section class="screen screen--game-over" id="game-over-screen" aria-labelledby="game-over-title" hidden>
+      <div class="game-over-card">
+        <div class="notice-icon" aria-hidden="true">☕</div>
+        <p class="section-kicker">Thanks for a busy shift</p>
+        <h1 id="game-over-title" tabindex="-1">Shift complete!</h1>
+        <p class="game-over-lead" id="game-over-lead">The cafe is closing for now.</p>
+        <p class="new-record" id="new-record" hidden>New high score!</p>
+        <div class="final-score">
+          <span>Final score</span>
+          <strong id="final-score">0</strong>
+        </div>
+        <dl class="game-over-stats">
+          <div><dt>Customers served</dt><dd id="final-served">0</dd></div>
+          <div><dt>Correct orders</dt><dd id="final-correct">0</dd></div>
+          <div><dt>Wrong or missed</dt><dd id="final-wrong">0</dd></div>
+          <div><dt>Best combo</dt><dd id="final-combo">×0</dd></div>
+          <div><dt>High score</dt><dd id="final-high-score">0</dd></div>
+        </dl>
+        <p class="storage-notice" id="game-over-storage-notice" role="status" aria-live="polite"></p>
+        <div class="game-over-actions">
+          <button class="button button--primary" id="play-again-button" type="button">Play again</button>
+          <button class="button button--secondary" id="game-over-menu-button" type="button">Main menu</button>
+        </div>
+      </div>
+    </section>
   </main>
   <script src="script.js"></script>
 </body>
