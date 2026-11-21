@@ -27,6 +27,13 @@ const trayEmpty = document.querySelector("#tray-empty");
 const prepareButton = document.querySelector("#prepare-button");
 const clearButton = document.querySelector("#clear-button");
 const serveButton = document.querySelector("#serve-button");
+const customerOrderHeading = document.querySelector(".customer-details h2");
+const orderCardImage = document.querySelector(".order-card img");
+const orderCardName = document.querySelector(".order-card strong");
+const orderCard = document.querySelector(".order-card");
+const customerSprite = document.querySelector(".customer-sprite");
+const effectOverlay = document.querySelector(".effect-overlay");
+const effectImgs = [...document.querySelectorAll(".effect-img")];
 const gameMessage = document.querySelector("#game-message");
 const timerDisplay = document.querySelector("#timer-display");
 const scoreDisplay = document.querySelector("#score-display");
@@ -56,11 +63,42 @@ const startingLives = 3;
 const startingPatience = 30;
 const correctOrderPoints = 100;
 const correctOrderTip = 5;
-const incorrectOrderPenalty = 25;
+const incorrectOrderPenalty = 30;
+const customerLeavePenalty = 20;
+const fastServiceBonus = 50;
+const comboRewardPoints = 25;
+const fastServiceThreshold = 0.5;
 let remainingSeconds = roundLength;
 let timerInterval = null;
 let selectedIngredients = new Set();
 let drinkPrepared = false;
+const customerTypes = {
+  student: {
+    name: "Student",
+    patience: startingPatience,
+    tipMultiplier: 1.0,
+    sprite: "assets/customers/customer-student.png",
+  },
+  worker: {
+    name: "Worker",
+    patience: Math.ceil(startingPatience * 2 / 3),
+    tipMultiplier: 1.0,
+    sprite: "assets/customers/customer-worker.png",
+  },
+  regular: {
+    name: "Regular",
+    patience: startingPatience,
+    tipMultiplier: 1.5,
+    sprite: "assets/customers/customer-regular.png",
+  },
+};
+
+let currentCustomerType = null;
+let currentCustomerPatience = startingPatience;
+let currentOrderDrink = null;
+let orderStartRemainingSeconds = roundLength;
+let shiftStartSeconds = 0;
+let difficultyLevel = 1;
 let soundEnabled = false;
 let servedCount = 0;
 let currentScore = 0;
@@ -85,7 +123,10 @@ const storageKeys = {
 };
 
 const recipes = {
+  "Americano": new Set(["espresso", "water"]),
+  "Cappuccino": new Set(["espresso", "milk-foam"]),
   "Iced Latte": new Set(["espresso", "milk", "ice"]),
+  "Mocha": new Set(["espresso", "milk", "chocolate"]),
 };
 
 function showScreen(screenName) {
@@ -187,7 +228,7 @@ function startTimer() {
     updatePatience();
 
     if (patienceSeconds === 0 && remainingSeconds > 0) {
-      missOrder("The customer ran out of patience. One life was lost.");
+      missOrder("The customer ran out of patience. One life was lost.", customerLeavePenalty);
     }
 
     if (remainingSeconds === 0 && currentLives > 0) {
@@ -204,6 +245,50 @@ function setServiceEnabled(isEnabled) {
     !isEnabled || selectedIngredients.size === 0 || drinkPrepared;
   clearButton.disabled = !isEnabled || selectedIngredients.size === 0;
   serveButton.disabled = !isEnabled || !drinkPrepared;
+}
+
+function pickRandomDrink() {
+  const drinkNames = Object.keys(recipes);
+  currentOrderDrink = drinkNames[Math.floor(Math.random() * drinkNames.length)];
+
+  const customerKeys = Object.keys(customerTypes).filter(
+    (customerKey) => customerKey !== currentCustomerType,
+  );
+  currentCustomerType =
+    customerKeys[Math.floor(Math.random() * customerKeys.length)];
+  const customerConfig = customerTypes[currentCustomerType];
+  currentCustomerPatience = customerConfig.patience;
+
+  shiftStartSeconds = shiftStartSeconds || remainingSeconds;
+  difficultyLevel = Math.floor((roundLength - remainingSeconds) / 15) + 1;
+  difficultyLevel = Math.min(difficultyLevel, 4);
+
+  const drinkImageMap = {
+    Americano: "assets/drinks/americano.png",
+    Cappuccino: "assets/drinks/cappuccino.png",
+    "Iced Latte": "assets/drinks/iced-latte.png",
+    Mocha: "assets/drinks/mocha.png",
+  };
+
+  customerSprite.src = customerConfig.sprite;
+  customerSprite.alt = `A ${currentCustomerType} customer waiting for an order`;
+  orderStartRemainingSeconds = remainingSeconds;
+  customerOrderHeading.textContent = `One ${currentOrderDrink}, please!`;
+  orderCardImage.src = drinkImageMap[currentOrderDrink];
+  orderCardName.textContent = currentOrderDrink;
+  orderCard.setAttribute("aria-label", `Drink order: ${currentOrderDrink}`);
+}
+
+function showEffect(effectClass, durationMs = 550) {
+  effectImgs.forEach((img) => {
+    if (img.classList.contains(effectClass)) {
+      img.classList.remove("show");
+      // Force reflow to restart animation
+      void img.offsetWidth;
+      img.classList.add("show");
+      setTimeout(() => img.classList.remove("show"), durationMs);
+    }
+  });
 }
 
 function updateTray() {
@@ -242,7 +327,13 @@ function clearTray() {
 }
 
 function updatePatience() {
-  const percent = Math.ceil((patienceSeconds / startingPatience) * 100);
+  // Difficulty: patience reduces from type-specific max to 20s over the 90-second shift
+  const typeMaxPatience = currentCustomerType ? customerTypes[currentCustomerType].patience : startingPatience;
+  const patienceRange = typeMaxPatience - 20;
+  const progress = (roundLength - remainingSeconds) / roundLength;
+  const minPatience = Math.max(20, Math.round(typeMaxPatience - patienceRange * progress));
+
+  const percent = Math.ceil((patienceSeconds / minPatience) * 100);
   patienceValue.textContent = `${percent}%`;
   patienceTrack.setAttribute("aria-valuenow", String(percent));
   patienceFill.style.width = `${percent}%`;
@@ -302,15 +393,14 @@ function endShift(message) {
   showScreen("game-over");
 }
 
-function missOrder(message) {
+function missOrder(message, penalty = incorrectOrderPenalty) {
+  showEffect("effect-leaving");
   currentLives = Math.max(0, currentLives - 1);
   wrongOrderCount += 1;
-  currentScore = Math.max(0, currentScore - incorrectOrderPenalty);
+  currentScore = Math.max(0, currentScore - penalty);
   currentCombo = 0;
-  patienceSeconds = startingPatience;
   updateLives();
   updateScoreboard();
-  updatePatience();
   clearTray();
 
   if (currentLives === 0) {
@@ -320,6 +410,9 @@ function missOrder(message) {
     return;
   }
 
+  pickRandomDrink();
+  patienceSeconds = currentCustomerPatience;
+  updatePatience();
   setServiceEnabled(true);
   gameMessage.textContent = `${message} The next customer is waiting.`;
 }
@@ -327,7 +420,6 @@ function missOrder(message) {
 function resetShift() {
   stopTimer();
   remainingSeconds = roundLength;
-  patienceSeconds = startingPatience;
   servedCount = 0;
   currentScore = 0;
   currentTips = 0;
@@ -336,14 +428,17 @@ function resetShift() {
   correctOrderCount = 0;
   wrongOrderCount = 0;
   currentLives = startingLives;
+  currentCustomerType = null;
   timerDisplay.textContent = formatTime(remainingSeconds);
   updateScoreboard();
   updateLives();
-  updatePatience();
   pauseButton.disabled = false;
+  pickRandomDrink();
+  patienceSeconds = currentCustomerPatience;
+  updatePatience();
   clearTray();
   setServiceEnabled(true);
-  gameMessage.textContent = "A customer is waiting for their Iced Latte.";
+  gameMessage.textContent = `A customer is waiting for their ${currentOrderDrink}.`;
 }
 
 function beginShift() {
@@ -468,28 +563,54 @@ serveButton.addEventListener("click", () => {
     return;
   }
 
-  const recipe = recipes["Iced Latte"];
+  const recipe = recipes[currentOrderDrink];
   const isCorrect =
     selectedIngredients.size === recipe.size &&
     [...recipe].every((ingredient) => selectedIngredients.has(ingredient));
 
   if (!isCorrect) {
+    showEffect("effect-wrong");
     missOrder(
       "That recipe was incorrect. One life was lost and the combo ended.",
     );
     return;
   }
 
+  const tipAmount = Math.floor(correctOrderTip * customerTypes[currentCustomerType].tipMultiplier);
+  const secondsTaken = orderStartRemainingSeconds - remainingSeconds;
+  const fastServiceAllowed = startingPatience * fastServiceThreshold;
+  const isFastService = secondsTaken <= fastServiceAllowed;
+
   currentScore += correctOrderPoints;
-  currentTips += correctOrderTip;
+  currentTips += tipAmount;
+
+  if (isFastService) {
+    currentScore += fastServiceBonus;
+  }
+
+  const comboBonus = comboRewardPoints * currentCombo;
+  currentScore += comboBonus;
+
   currentCombo += 1;
   bestCombo = Math.max(bestCombo, currentCombo);
   correctOrderCount += 1;
   servedCount += 1;
   updateScoreboard();
-  patienceSeconds = startingPatience;
+  pickRandomDrink();
+  patienceSeconds = currentCustomerPatience;
   updatePatience();
-  gameMessage.textContent = `Correct order! +${correctOrderPoints} points and $${correctOrderTip} tip. Combo ×${currentCombo}!`;
+
+  let message = `Correct order! +${correctOrderPoints} points`;
+  if (isFastService) {
+    message += `, +${fastServiceBonus} fast service`;
+  }
+  if (comboBonus > 0) {
+    message += `, +${comboBonus} combo`;
+  }
+  message += ` and $${tipAmount} tip. Combo ×${currentCombo}!`;
+  gameMessage.textContent = message;
+  showEffect("effect-correct");
+  showEffect("effect-coin");
   clearTray();
   setServiceEnabled(true);
 });

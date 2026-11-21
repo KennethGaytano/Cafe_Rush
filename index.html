@@ -72,19 +72,46 @@
 
           <aside class="sample-order" aria-labelledby="sample-title">
             <div class="sample-heading">
-              <p class="section-kicker">A practice order</p>
-              <h2 id="sample-title">Iced Latte</h2>
+              <p class="section-kicker">Practice orders</p>
+              <h2 id="sample-title">Drink recipes</h2>
             </div>
-            <img class="sample-drink" src="assets/drinks/iced-latte.png" alt="Pixel art iced latte in a takeaway cup">
             <div class="recipe-list">
-              <p class="recipe-label">This recipe needs:</p>
-              <ul>
-                <li><img src="assets/ingredients/espresso.png" alt=""><span>Espresso</span></li>
-                <li><img src="assets/ingredients/milk.png" alt=""><span>Milk</span></li>
-                <li><img src="assets/ingredients/ice.png" alt=""><span>Ice</span></li>
-              </ul>
+              <div class="sample-drink-card">
+                <img class="sample-drink" src="assets/drinks/americano.png" alt="Pixel art americano in a takeaway cup">
+                <strong>Americano</strong>
+                <ul>
+                  <li><img src="assets/ingredients/espresso.png" alt=""><span>Espresso</span></li>
+                  <li><img src="assets/ingredients/water.png" alt=""><span>Water</span></li>
+                </ul>
+              </div>
+              <div class="sample-drink-card">
+                <img class="sample-drink" src="assets/drinks/cappuccino.png" alt="Pixel art cappuccino in a takeaway cup">
+                <strong>Cappuccino</strong>
+                <ul>
+                  <li><img src="assets/ingredients/espresso.png" alt=""><span>Espresso</span></li>
+                  <li><img src="assets/ingredients/milk-foam.png" alt=""><span>Milk foam</span></li>
+                </ul>
+              </div>
+              <div class="sample-drink-card">
+                <img class="sample-drink" src="assets/drinks/iced-latte.png" alt="Pixel art iced latte in a takeaway cup">
+                <strong>Iced Latte</strong>
+                <ul>
+                  <li><img src="assets/ingredients/espresso.png" alt=""><span>Espresso</span></li>
+                  <li><img src="assets/ingredients/milk.png" alt=""><span>Milk</span></li>
+                  <li><img src="assets/ingredients/ice.png" alt=""><span>Ice</span></li>
+                </ul>
+              </div>
+              <div class="sample-drink-card">
+                <img class="sample-drink" src="assets/drinks/mocha.png" alt="Pixel art mocha in a takeaway cup">
+                <strong>Mocha</strong>
+                <ul>
+                  <li><img src="assets/ingredients/espresso.png" alt=""><span>Espresso</span></li>
+                  <li><img src="assets/ingredients/milk.png" alt=""><span>Milk</span></li>
+                  <li><img src="assets/ingredients/chocolate.png" alt=""><span>Chocolate</span></li>
+                </ul>
+              </div>
             </div>
-            <p class="sample-tip">Select all three ingredients. Extra or missing ingredients make the order incorrect.</p>
+            <p class="sample-tip">Select the exact ingredients for each order. Extra or missing ingredients make the order incorrect.</p>
           </aside>
         </div>
 
@@ -133,7 +160,7 @@
             <img class="customer-sprite" src="assets/customers/customer-student.png" alt="A student customer waiting for an order">
             <div class="customer-details">
               <p class="section-kicker">Your customer</p>
-              <h2>One Iced Latte, please!</h2>
+              <h2>One drink, please!</h2>
               <div class="patience-label">
                 <span>Patience</span>
                 <span id="patience-value">100%</span>
@@ -142,11 +169,18 @@
                 <span id="patience-fill"></span>
               </div>
             </div>
-            <aside class="order-card" aria-label="Drink order: Iced Latte">
+            <aside class="order-card" aria-label="Drink order">
               <span class="order-caption">Order up</span>
               <img src="assets/drinks/iced-latte.png" alt="">
               <strong>Iced Latte</strong>
             </aside>
+          </div>
+
+          <div class="effect-overlay" aria-hidden="true">
+            <img class="effect-img effect-correct" src="assets/effects/correct-order.png" alt="">
+            <img class="effect-img effect-wrong" src="assets/effects/wrong-order.png" alt="">
+            <img class="effect-img effect-leaving" src="assets/effects/customer-leaving.png" alt="">
+            <img class="effect-img effect-coin" src="assets/effects/coin-reward.png" alt="">
           </div>
         </section>
 
@@ -196,7 +230,7 @@
                 <p class="tray-empty" id="tray-empty">Choose ingredients to add them here.</p>
                 <ul class="tray-items" id="tray-items" aria-label="Selected ingredients"></ul>
               </div>
-              <p class="game-message" id="game-message" role="status">A customer is waiting for their Iced Latte.</p>
+              <p class="game-message" id="game-message" role="status">A customer is waiting for their order.</p>
               <div class="work-actions">
                 <button class="button button--secondary" id="clear-button" type="button">Clear tray</button>
                 <button class="button button--primary" id="prepare-button" type="button">Prepare</button>
