@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#3b241b">
+  <title>Cafe Rush</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="game">
+    <section class="screen screen--menu is-active" id="menu-screen" aria-labelledby="menu-title">
+      <div class="menu-card">
+        <img class="game-logo" src="assets/ui/logo.png" alt="Cafe Rush">
+        <p class="menu-kicker">A cozy little coffee shop. A very busy day.</p>
+        <h1 class="visually-hidden" id="menu-title">Cafe Rush main menu</h1>
+
+        <nav class="menu-actions" aria-label="Main menu">
+          <button class="button button--primary" id="play-button" type="button">
+            <span class="button-icon" aria-hidden="true">▶</span>
+            Start your shift
+          </button>
+          <button class="button button--secondary" id="how-to-button" type="button">
+            How to play
+          </button>
+        </nav>
+        <p class="menu-note">Make every cup count.</p>
+      </div>
+      <p class="menu-credit">A warm welcome is always brewing</p>
+    </section>
+
+    <section class="screen screen--how-to" id="how-to-screen" aria-labelledby="how-to-title" hidden>
+      <div class="guide-shell">
+        <header class="guide-header">
+          <button class="back-button" id="back-button" type="button">
+            <span aria-hidden="true">←</span> Main menu
+          </button>
+          <p class="section-kicker">Your first day at the cafe</p>
+          <h1 id="how-to-title" tabindex="-1">How to play</h1>
+          <p class="guide-intro">Serve the right drink before your customer runs out of patience.</p>
+        </header>
+
+        <div class="guide-content">
+          <ol class="steps-list">
+            <li class="step-card">
+              <span class="step-number" aria-hidden="true">1</span>
+              <div>
+                <h2>Read the order</h2>
+                <p>A customer will ask for a drink. Check the order card so you know what to make.</p>
+              </div>
+            </li>
+            <li class="step-card">
+              <span class="step-number" aria-hidden="true">2</span>
+              <div>
+                <h2>Choose the ingredients</h2>
+                <p>Tap or click each ingredient the recipe needs. The order you choose them in does not matter.</p>
+              </div>
+            </li>
+            <li class="step-card">
+              <span class="step-number" aria-hidden="true">3</span>
+              <div>
+                <h2>Prepare and serve</h2>
+                <p>When your ingredients match the recipe, prepare the drink and serve it to the customer.</p>
+              </div>
+            </li>
+          </ol>
+
+          <aside class="sample-order" aria-labelledby="sample-title">
+            <div class="sample-heading">
+              <p class="section-kicker">A practice order</p>
+              <h2 id="sample-title">Iced Latte</h2>
+            </div>
+            <img class="sample-drink" src="assets/drinks/iced-latte.png" alt="Pixel art iced latte in a takeaway cup">
+            <div class="recipe-list">
+              <p class="recipe-label">This recipe needs:</p>
+              <ul>
+                <li><img src="assets/ingredients/espresso.png" alt=""><span>Espresso</span></li>
+                <li><img src="assets/ingredients/milk.png" alt=""><span>Milk</span></li>
+                <li><img src="assets/ingredients/ice.png" alt=""><span>Ice</span></li>
+              </ul>
+            </div>
+            <p class="sample-tip">Select all three ingredients. Extra or missing ingredients make the order incorrect.</p>
+          </aside>
+        </div>
+
+        <footer class="guide-footer">
+          <p>Quick hands and careful orders make a great barista.</p>
+          <button class="button button--primary" id="guide-done-button" type="button">Got it!</button>
+        </footer>
+      </div>
+    </section>
+
+    <section class="screen screen--gameplay" id="gameplay-screen" aria-labelledby="gameplay-title" hidden>
+      <header class="game-hud" aria-label="Shift information">
+        <div class="hud-brand">
+          <img src="assets/ui/logo.png" alt="" class="hud-logo">
+          <h1 class="visually-hidden" id="gameplay-title">Cafe Rush gameplay</h1>
+        </div>
+        <div class="hud-stat hud-stat--timer">
+          <span class="hud-label">Time</span>
+          <strong id="timer-display" role="timer" aria-live="off">01:30</strong>
+        </div>
+        <div class="hud-stat">
+          <span class="hud-label">Score</span>
+          <strong id="score-display">0</strong>
+        </div>
+        <div class="hud-stat">
+          <span class="hud-label">Tips</span>
+          <strong id="money-display">$0</strong>
+        </div>
+        <div class="hud-stat hud-stat--served">
+          <span class="hud-label">Served</span>
+          <strong id="served-display">0</strong>
+        </div>
+        <div class="hud-stat hud-stat--lives">
+          <span class="hud-label">Lives</span>
+          <strong id="lives-display" aria-label="3 lives">
+            <img src="assets/ui/life.png" alt="">
+            <img src="assets/ui/life.png" alt="">
+            <img src="assets/ui/life.png" alt="">
+          </strong>
+        </div>
+      </header>
+
+      <div class="cafe-floor">
+        <section class="customer-stage" aria-label="Customer order">
+          <div class="customer-card">
+            <img class="customer-sprite" src="assets/customers/customer-student.png" alt="A student customer waiting for an order">
+            <div class="customer-details">
+              <p class="section-kicker">Your customer</p>
+              <h2>One Iced Latte, please!</h2>
+              <div class="patience-label">
+                <span>Patience</span>
+                <span id="patience-value">100%</span>
+              </div>
+              <div class="patience-track" role="progressbar" aria-label="Customer patience" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+                <span id="patience-fill"></span>
+              </div>
+            </div>
+            <aside class="order-card" aria-label="Drink order: Iced Latte">
+              <span class="order-caption">Order up</span>
+              <img src="assets/drinks/iced-latte.png" alt="">
+              <strong>Iced Latte</strong>
+            </aside>
+          </div>
+        </section>
+
+        <section class="workstation" aria-label="Drink preparation">
+          <div class="workstation-heading">
+            <div>
+              <p class="section-kicker">At the counter</p>
+              <h2>Build the order</h2>
+            </div>
+            <p class="combo-display">Combo <strong id="combo-display">×0</strong></p>
+          </div>
+
+          <div class="workstation-grid">
+            <div class="ingredient-area">
+              <h3>Choose ingredients</h3>
+              <div class="ingredient-grid" id="ingredient-grid">
+                <button class="ingredient-button" type="button" data-ingredient="espresso" aria-pressed="false">
+                  <img src="assets/ingredients/espresso.png" alt="">
+                  <span>Espresso</span>
+                </button>
+                <button class="ingredient-button" type="button" data-ingredient="milk" aria-pressed="false">
+                  <img src="assets/ingredients/milk.png" alt="">
+                  <span>Milk</span>
+                </button>
+                <button class="ingredient-button" type="button" data-ingredient="ice" aria-pressed="false">
+                  <img src="assets/ingredients/ice.png" alt="">
+                  <span>Ice</span>
+                </button>
+                <button class="ingredient-button" type="button" data-ingredient="water" aria-pressed="false">
+                  <img src="assets/ingredients/water.png" alt="">
+                  <span>Water</span>
+                </button>
+                <button class="ingredient-button" type="button" data-ingredient="milk-foam" aria-pressed="false">
+                  <img src="assets/ingredients/milk-foam.png" alt="">
+                  <span>Milk foam</span>
+                </button>
+                <button class="ingredient-button" type="button" data-ingredient="chocolate" aria-pressed="false">
+                  <img src="assets/ingredients/chocolate.png" alt="">
+                  <span>Chocolate</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="tray-area">
+              <h3>Preparation tray</h3>
+              <div class="preparation-tray" id="preparation-tray" aria-live="polite">
+                <p class="tray-empty" id="tray-empty">Choose ingredients to add them here.</p>
+                <ul class="tray-items" id="tray-items" aria-label="Selected ingredients"></ul>
+              </div>
+              <p class="game-message" id="game-message" role="status">A customer is waiting for their Iced Latte.</p>
+              <div class="work-actions">
+                <button class="button button--secondary" id="clear-button" type="button">Clear tray</button>
+                <button class="button button--primary" id="prepare-button" type="button">Prepare</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <footer class="game-controls">
+          <p>Make the drink, then serve it to your customer.</p>
+          <div class="control-actions">
+            <button class="button button--secondary sound-toggle" id="sound-button" type="button" aria-pressed="false">
+              <span aria-hidden="true">♫</span> Sound: Off
+            </button>
+            <button class="button button--primary serve-button" id="serve-button" type="button" disabled>Serve drink</button>
+            <button class="button button--secondary pause-button" id="pause-button" type="button">
+              <span aria-hidden="true">Ⅱ</span> Pause
+            </button>
+          </div>
+        </footer>
+      </div>
+    </section>
+
+    <dialog class="notice-dialog pause-dialog" id="pause-dialog" aria-labelledby="pause-title">
+      <div class="notice-icon" aria-hidden="true">Ⅱ</div>
+      <p class="section-kicker">Take a breather</p>
+      <h2 id="pause-title">Shift paused</h2>
+      <p>Your shift timer is stopped. Ready to get back to the counter?</p>
+      <div class="notice-actions">
+        <button class="button button--primary" id="resume-button" type="button">Resume shift</button>
+        <button class="button button--secondary" id="restart-button" type="button">Restart shift</button>
+        <button class="button button--secondary" id="exit-game-button" type="button">Main menu</button>
+      </div>
+    </dialog>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
