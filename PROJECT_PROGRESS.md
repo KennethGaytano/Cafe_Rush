@@ -154,21 +154,31 @@ Cafe Rush is a cozy pixel-art cafe time-management game for desktop browsers. Th
 
 ## Sound asset checklist
 
-No sound files are currently integrated. The sound setting is available, but it does not play audio yet.
+### Integrated sound effects:
 
-- [ ] Cafe ambience or background music.
-- [ ] Button hover and click sounds.
-- [ ] Shift start, pause, and resume sounds.
-- [ ] Ingredient select/deselect, clear tray, and prepare sounds.
-- [ ] Correct serve and tip/coin reward sounds.
-- [ ] Combo milestone sound.
-- [ ] Incorrect order, customer leaving, and life-lost sounds.
+- [x] Cafe ambience / background music - loops during gameplay, respects sound on/off setting
+- [x] Button hover sound - plays on ingredient button clicks
+- [x] Button click sound - plays on sound toggle, menu buttons, game controls
+- [x] Shift start sound - plays when player begins a new shift
+- [x] Shift pause sound - plays when shift is paused
+- [x] Shift resume sound - plays when shift is resumed
+- [x] Ingredient select/deselect sound - plays when toggling ingredients
+- [x] Clear tray sound - plays when clear button is clicked
+- [x] Prepare drink sound - plays when prepare button is clicked
+- [x] Serve drink sound - plays when serve button is clicked
+
+Remaining sound effects to add:
+- [ ] Correct serve and tip/coin reward sounds
+- [ ] Combo milestone sound
+- [ ] Incorrect order, customer leaving, and life-lost sounds
 - [ ] Low-patience/timer warning sound.
 - [ ] Shift over and new high-score sounds.
 
 ## Validation notes
 
 - [x] `node --check script.js` passes.
+- [x] Fixed duplicate sound declarations that caused a JavaScript syntax error and prevented all button handlers from loading.
+- [x] Browser-tested menu, help/high-score dialogs, sound toggle, shift start, ingredient preparation/serving, pause/resume, and return to menu after the fix.
 - [x] Browser checks cover core order outcomes, timers/pause, Game Over, local storage, and responsive layout.
 - [x] Browser-tested customer and drink rotation after correct and incorrect serves; consecutive customer types differ.
 - [ ] Add repeatable automated tests.

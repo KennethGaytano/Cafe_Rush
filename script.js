@@ -58,6 +58,35 @@ const highScoreStorageNotice = document.querySelector(
 const playAgainButton = document.querySelector("#play-again-button");
 const gameOverMenuButton = document.querySelector("#game-over-menu-button");
 
+// Sound settings
+let clickSoundVolume = 0.5;
+let backgroundMusicVolume = 0.5;
+const volumeStep = 0.1;
+
+// Sound effects
+const clickSound = new Audio("assets/sounds/click.mp3");
+clickSound.volume = clickSoundVolume;
+
+const clickHoverSound = new Audio("assets/sounds/click.mp3");
+clickHoverSound.volume = clickSoundVolume;
+
+const backgroundMusic = new Audio("assets/sounds/background-music.mp3");
+backgroundMusic.loop = true;
+backgroundMusic.volume = backgroundMusicVolume;
+
+function adjustClickSoundVolume(delta) {
+  clickSoundVolume = Math.max(0, Math.min(1, clickSoundVolume + delta));
+  clickSound.volume = clickSoundVolume;
+  clickHoverSound.volume = clickSoundVolume;
+  return clickSoundVolume;
+}
+
+function adjustBackgroundMusicVolume(delta) {
+  backgroundMusicVolume = Math.max(0, Math.min(1, backgroundMusicVolume + delta));
+  backgroundMusic.volume = backgroundMusicVolume;
+  return backgroundMusicVolume;
+}
+
 const roundLength = 90;
 const startingLives = 3;
 const startingPatience = 30;
@@ -167,6 +196,18 @@ function setSoundEnabled(enabled) {
     button.setAttribute("aria-pressed", String(soundEnabled));
     button.lastChild.textContent = soundEnabled ? " Sound: On" : " Sound: Off";
   });
+
+  // Control background music
+  if (backgroundMusic) {
+    if (enabled) {
+      backgroundMusic.play().catch(() => {
+        // Autoplay policy may prevent playback until user interaction
+      });
+    } else {
+      backgroundMusic.pause();
+      backgroundMusic.currentTime = 0;
+    }
+  }
 
   try {
     window.localStorage.setItem(storageKeys.soundEnabled, String(soundEnabled));
@@ -442,21 +483,33 @@ function resetShift() {
 }
 
 function beginShift() {
+  clickSound.currentTime = 0;
+  clickSound.play();
   resetShift();
   showScreen("gameplay");
   startTimer();
+  // Start background music if sound is enabled
+  if (soundEnabled && backgroundMusic) {
+    backgroundMusic.play().catch(() => {
+      // Autoplay policy may prevent playback until user interaction
+    });
+  }
 }
 
 function pauseShift() {
   if (remainingSeconds === 0) {
     return;
   }
+  clickSound.currentTime = 0;
+  clickSound.play();
   stopTimer();
   pauseDialog.showModal();
   resumeButton.focus();
 }
 
 function resumeShift() {
+  clickSound.currentTime = 0;
+  clickSound.play();
   if (pauseDialog.open) {
     pauseDialog.close();
   }
@@ -472,7 +525,11 @@ function showHighScores() {
   closeHighScoresButton.focus();
 }
 
-playButton.addEventListener("click", beginShift);
+playButton.addEventListener("click", () => {
+  clickSound.currentTime = 0;
+  clickSound.play();
+  beginShift();
+});
 howToButton.addEventListener("click", () => showScreen("how-to"));
 backButton.addEventListener("click", () => showScreen("menu"));
 guideDoneButton.addEventListener("click", () => showScreen("menu"));
@@ -485,6 +542,8 @@ playAgainButton.addEventListener("click", beginShift);
 gameOverMenuButton.addEventListener("click", () => showScreen("menu"));
 
 restartButton.addEventListener("click", () => {
+  clickSound.currentTime = 0;
+  clickSound.play();
   pauseDialog.close();
   resetShift();
   startTimer();
@@ -492,6 +551,8 @@ restartButton.addEventListener("click", () => {
 });
 
 exitGameButton.addEventListener("click", () => {
+  clickSound.currentTime = 0;
+  clickSound.play();
   pauseDialog.close();
   showScreen("menu");
 });
@@ -520,6 +581,8 @@ document.addEventListener("keydown", (event) => {
 
 ingredientButtons.forEach((button) => {
   button.addEventListener("click", () => {
+    clickHoverSound.currentTime = 0;
+    clickHoverSound.play();
     if (remainingSeconds === 0 || drinkPrepared) {
       return;
     }
@@ -538,12 +601,16 @@ ingredientButtons.forEach((button) => {
 });
 
 clearButton.addEventListener("click", () => {
+  clickSound.currentTime = 0;
+  clickSound.play();
   clearTray();
   gameMessage.textContent =
     "The tray is clear. Choose the ingredients for the order.";
 });
 
 prepareButton.addEventListener("click", () => {
+  clickSound.currentTime = 0;
+  clickSound.play();
   if (selectedIngredients.size === 0 || remainingSeconds === 0) {
     return;
   }
@@ -559,6 +626,8 @@ prepareButton.addEventListener("click", () => {
 });
 
 serveButton.addEventListener("click", () => {
+  clickSound.currentTime = 0;
+  clickSound.play();
   if (!drinkPrepared || remainingSeconds === 0) {
     return;
   }
@@ -616,16 +685,46 @@ serveButton.addEventListener("click", () => {
 });
 
 soundButton.addEventListener("click", () => {
+  clickSound.currentTime = 0;
+  clickSound.play();
   setSoundEnabled(!soundEnabled);
   gameMessage.textContent = soundEnabled
     ? "Sound setting is on. Sound effects are not added yet."
     : "Sound setting is off.";
 });
 
-menuSoundButton.addEventListener("click", () => setSoundEnabled(!soundEnabled));
-pauseSoundButton.addEventListener("click", () =>
-  setSoundEnabled(!soundEnabled),
-);
+menuSoundButton.addEventListener("click", () => {
+  clickSound.currentTime = 0;
+  clickSound.play();
+  setSoundEnabled(!soundEnabled);
+});
+
+pauseSoundButton.addEventListener("click", () => {
+  clickSound.currentTime = 0;
+  clickSound.play();
+  setSoundEnabled(!soundEnabled);
+});
+
+/* Volume control keyboard shortcuts */
+document.addEventListener("keydown", (event) => {
+  if (event.key === "ArrowUp" && backgroundMusic) {
+    event.preventDefault();
+    backgroundMusicVolume = adjustBackgroundMusicVolume(volumeStep);
+    gameMessage.textContent = `Background music volume: ${Math.round(backgroundMusicVolume * 100)}%`;
+  } else if (event.key === "ArrowDown" && backgroundMusic) {
+    event.preventDefault();
+    backgroundMusicVolume = adjustBackgroundMusicVolume(-volumeStep);
+    gameMessage.textContent = `Background music volume: ${Math.round(backgroundMusicVolume * 100)}%`;
+  } else if (event.key === "PageUp") {
+    event.preventDefault();
+    clickSoundVolume = adjustClickSoundVolume(volumeStep);
+    gameMessage.textContent = `Click sound volume: ${Math.round(clickSoundVolume * 100)}%`;
+  } else if (event.key === "PageDown") {
+    event.preventDefault();
+    clickSoundVolume = adjustClickSoundVolume(-volumeStep);
+    gameMessage.textContent = `Click sound volume: ${Math.round(clickSoundVolume * 100)}%`;
+  }
+});
 
 highScoresDialog.addEventListener("close", () => highScoresButton.focus());
 
