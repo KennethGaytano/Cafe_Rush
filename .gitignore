@@ -32,3 +32,5 @@ Thumbs.db
 
 # Coffee Rush specific
 *.log
+# Playwright
+.playwright-mcp/
