@@ -1,0 +1,206 @@
+/* How-to-play guide and illustrated recipes */
+.screen--how-to {
+  min-height: 100svh;
+  padding: clamp(20px, 4vw, 48px);
+  background:
+    radial-gradient(ellipse at 10% 5%, rgb(201 155 105 / 22%), transparent 38%),
+    #f3e6d0;
+}
+
+.guide-shell {
+  width: min(100%, 1040px);
+  margin: 0 auto;
+  padding: clamp(20px, 4vw, 42px);
+  border: 3px solid var(--caramel);
+  border-radius: 14px;
+  background: var(--paper);
+  box-shadow: var(--shadow), inset 0 0 0 5px rgb(117 76 53 / 8%);
+}
+
+.guide-header {
+  position: relative;
+  padding: 8px 0 24px;
+  border-bottom: 2px solid rgb(117 76 53 / 18%);
+  text-align: center;
+}
+
+.back-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border: 1px solid rgb(117 76 53 / 35%);
+  border-radius: 7px;
+  color: var(--coffee);
+  background: #fff8ec;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.back-button:hover {
+  background: #f3e6d0;
+}
+
+.section-kicker {
+  margin: 0 0 5px;
+  color: #754c35;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.guide-header h1,
+.sample-heading h2 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+}
+
+.guide-header h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.guide-intro {
+  margin: 8px 0 0;
+  color: #684a39;
+}
+
+.guide-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+  gap: clamp(20px, 4vw, 42px);
+  padding: 28px 0;
+}
+
+.steps-list {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: steps;
+}
+
+.step-card {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 17px;
+  border: 1px solid rgb(117 76 53 / 17%);
+  border-radius: 9px;
+  background: #fffdf8;
+  box-shadow: 0 3px 0 rgb(117 76 53 / 10%);
+}
+
+.step-number {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 2px solid var(--coffee);
+  border-radius: 50%;
+  color: var(--cream);
+  background: var(--espresso);
+  font-weight: 700;
+}
+
+.step-card h2 {
+  margin: 1px 0 5px;
+  font-size: 1.05rem;
+}
+
+.step-card p {
+  margin: 0;
+  color: #684a39;
+  font-size: 0.93rem;
+  line-height: 1.5;
+}
+
+.sample-order {
+  align-self: stretch;
+  padding: 18px;
+  border: 2px solid var(--caramel);
+  border-radius: 10px;
+  background: linear-gradient(150deg, #f8edda, #f3e6d0);
+}
+
+.sample-heading {
+  text-align: center;
+}
+
+.sample-heading h2 {
+  font-size: 1.5rem;
+}
+
+.sample-drink {
+  display: block;
+  width: min(100%, 150px);
+  height: 150px;
+  margin: 10px auto;
+  border: 2px solid rgb(117 76 53 / 36%);
+  border-radius: 8px;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+
+.recipe-list ul {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.recipe-list li {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 8px 4px;
+  border: 1px solid rgb(117 76 53 / 16%);
+  border-radius: 7px;
+  background: rgb(255 248 236 / 74%);
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.recipe-list img {
+  width: 42px;
+  height: 42px;
+  border-radius: 5px;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+
+.sample-tip {
+  margin: 12px 0 0;
+  color: #684a39;
+  font-size: 0.81rem;
+  line-height: 1.45;
+}
+
+.guide-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding-top: 20px;
+  border-top: 2px solid rgb(117 76 53 / 18%);
+}
+
+.guide-footer p {
+  margin: 0;
+  color: #684a39;
+}
+
+.guide-footer .button {
+  min-width: 130px;
+}
+

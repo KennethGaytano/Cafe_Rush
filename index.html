@@ -10,10 +10,11 @@
   <link rel="shortcut icon" href="assets/ui/favicon.ico">
   <link rel="apple-touch-icon" href="assets/ui/apple-touch-icon.png" sizes="180x180">
   <title>Cafe Rush</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
   <main id="game">
+    <!-- Opening splash: Enter or a tap moves the player to the main menu. -->
     <section class="intro-screen" id="intro-screen" aria-label="Cafe Rush intro" tabindex="-1">
       <img class="intro-logo" src="assets/ui/logo.png" alt="Cafe Rush">
       <p class="intro-play-hint">
@@ -22,6 +23,7 @@
       </p>
     </section>
 
+    <!-- Main menu and entry points for the guide, scores, and settings. -->
     <section class="screen screen--menu" id="menu-screen" aria-labelledby="menu-title" hidden>
       <div class="menu-card">
         <img class="game-logo" src="assets/ui/logo.png" alt="Cafe Rush">
@@ -45,6 +47,7 @@
       <p class="menu-credit">A warm welcome is always brewing</p>
     </section>
 
+    <!-- Game instructions and the complete ingredient reference for all recipes. -->
     <section class="screen screen--how-to" id="how-to-screen" aria-labelledby="how-to-title" hidden>
       <div class="guide-shell">
         <header class="guide-header">
@@ -133,7 +136,9 @@
       </div>
     </section>
 
+    <!-- Active shift: HUD, current customer/order, ingredient station, and controls. -->
     <section class="screen screen--gameplay" id="gameplay-screen" aria-labelledby="gameplay-title" hidden>
+      <!-- Shift timer and score/lives summary. -->
       <header class="game-hud" aria-label="Shift information">
         <div class="hud-brand">
           <img src="assets/ui/logo.png" alt="" class="hud-logo">
@@ -166,6 +171,7 @@
       </header>
 
       <div class="cafe-floor">
+        <!-- Current customer portrait, order, patience bar, and temporary feedback effects. -->
         <section class="customer-stage" aria-label="Customer order">
           <div class="customer-card">
             <img class="customer-sprite" src="assets/customers/customer-student.png" alt="A student customer waiting for an order">
@@ -195,6 +201,7 @@
           </div>
         </section>
 
+        <!-- Ingredient buttons fill the tray; Prepare locks the selection until the serve result. -->
         <section class="workstation" aria-label="Drink preparation">
           <div class="workstation-heading">
             <div>
@@ -263,6 +270,7 @@
       </div>
     </section>
 
+    <!-- Native dialogs keep pause, settings, and scores above the current screen. -->
     <dialog class="notice-dialog pause-dialog" id="pause-dialog" aria-labelledby="pause-title">
       <div class="notice-icon" aria-hidden="true">Ⅱ</div>
       <p class="section-kicker">Take a breather</p>
@@ -333,6 +341,6 @@
       </div>
     </section>
   </main>
-  <script src="script.js"></script>
+  <script type="module" src="scripts/game.js"></script>
 </body>
 </html>

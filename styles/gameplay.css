@@ -1,0 +1,86 @@
+/* Gameplay HUD stays above the cafe floor and round content. */
+.screen--gameplay {
+  display: flex;
+  min-height: 100svh;
+  flex-direction: column;
+  background: #3b241b;
+}
+
+.game-hud {
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(100px, 1.4fr) repeat(5, minmax(74px, 0.7fr));
+  gap: 10px;
+  align-items: center;
+  padding: 10px clamp(12px, 3vw, 36px);
+  border-bottom: 3px solid #3b241b;
+  background: #fff8ec;
+  box-shadow: 0 4px 12px rgb(34 20 15 / 25%);
+}
+
+.hud-brand {
+  display: flex;
+  align-items: center;
+}
+
+.hud-logo {
+  display: block;
+  width: min(100%, 150px);
+  height: 54px;
+  border: 2px solid var(--espresso);
+  border-radius: 5px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hud-stat {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  padding: 5px 8px;
+  border-left: 1px solid rgb(117 76 53 / 20%);
+  text-align: center;
+}
+
+.hud-label {
+  color: #684a39;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.hud-stat strong {
+  min-height: 25px;
+  font-size: 1.12rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.hud-stat--timer strong {
+  color: var(--espresso);
+  font-size: 1.35rem;
+}
+
+.hud-stat--lives strong {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.hud-stat--lives img {
+  width: 21px;
+  height: 21px;
+  image-rendering: pixelated;
+}
+
+.cafe-floor {
+  display: flex;
+  width: 100%;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  padding: clamp(18px, 3vw, 34px);
+  background:
+    linear-gradient(180deg, rgb(45 27 19 / 20%), rgb(45 27 19 / 48%)),
+    url("../assets/background/gameplay-cafe.png") center / cover fixed no-repeat;
+}

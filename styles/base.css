@@ -1,0 +1,56 @@
+/* Global palette, typography, and shared layout defaults */
+:root {
+  color-scheme: light;
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  color: #3b241b;
+  background: #f3e6d0;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --coffee: #3b241b;
+  --espresso: #754c35;
+  --caramel: #c99b69;
+  --cream: #f3e6d0;
+  --sage: #a7b58b;
+  --paper: #fff8ec;
+  --shadow: 0 16px 40px rgb(34 20 15 / 24%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+/* Hide scrollbar */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Keep the document scrollbar hidden in legacy browsers too. */
+html {
+  -ms-overflow-style: none;
+}
+
+button {
+  font: inherit;
+}
+
+button:focus-visible {
+  outline: 3px solid #fff8ec;
+  outline-offset: 4px;
+}
+
+/* Shared screen sizing and visibility */
+.screen {
+  min-height: 100vh;
+}
+
+.screen[hidden] {
+  display: none;
+}
+

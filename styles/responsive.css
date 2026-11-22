@@ -1,0 +1,278 @@
+/* Responsive tablet layout */
+@media (max-width: 700px) {
+  .game-hud {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 4px;
+    padding: 8px;
+  }
+
+  .hud-brand {
+    display: none;
+  }
+
+  .hud-stat {
+    padding: 4px;
+  }
+
+  .hud-label {
+    font-size: 0.62rem;
+  }
+
+  .hud-stat strong {
+    font-size: 0.95rem;
+  }
+
+  .hud-stat--timer strong {
+    font-size: 1.05rem;
+  }
+
+  .hud-stat--lives img {
+    width: 17px;
+    height: 17px;
+  }
+
+  .customer-card {
+    grid-template-columns: 110px minmax(140px, 1fr) 112px;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .customer-sprite {
+    width: 100px;
+    height: 140px;
+  }
+
+  .order-card img {
+    width: 65px;
+    height: 65px;
+  }
+
+  .workstation-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .preparation-tray {
+    min-height: 82px;
+  }
+
+  .game-controls {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .control-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .guide-content {
+    grid-template-columns: 1fr;
+  }
+
+  .sample-order {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(130px, 0.8fr);
+    gap: 0 16px;
+    align-items: center;
+  }
+
+  .sample-heading {
+    grid-column: 1 / -1;
+  }
+
+  .sample-drink {
+    grid-row: span 2;
+  }
+
+  .sample-tip {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Responsive phone layout */
+@media (max-width: 520px) {
+  .cafe-floor {
+    padding: 12px;
+    background-attachment: scroll;
+  }
+
+  .customer-stage {
+    min-height: 0;
+    flex: initial;
+    padding: 12px 0;
+  }
+
+  .customer-card {
+    grid-template-columns: 75px minmax(0, 1fr);
+    gap: 8px 12px;
+    padding: 12px;
+  }
+
+  .customer-sprite {
+    grid-row: span 2;
+    width: 72px;
+    height: 112px;
+  }
+
+  .customer-details h2 {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+  }
+
+  .customer-details .section-kicker {
+    font-size: 0.65rem;
+  }
+
+  .patience-track {
+    height: 11px;
+  }
+
+  .order-card {
+    grid-column: 2;
+    grid-row: 2;
+    grid-template-columns: 42px 1fr;
+    justify-items: start;
+    align-items: center;
+    padding: 5px 8px;
+    text-align: left;
+  }
+
+  .order-caption {
+    display: none;
+  }
+
+  .order-card img {
+    grid-row: span 2;
+    width: 38px;
+    height: 38px;
+  }
+
+  .order-card strong {
+    font-size: 0.78rem;
+  }
+
+  .workstation {
+    padding: 14px;
+  }
+
+  .workstation-heading {
+    margin-bottom: 10px;
+  }
+
+  .workstation-heading h2 {
+    font-size: 1.3rem;
+  }
+
+  .ingredient-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .ingredient-button {
+    min-height: 72px;
+    font-size: 0.66rem;
+  }
+
+  .ingredient-button img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .game-controls > p {
+    font-size: 0.77rem;
+  }
+
+  .control-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .control-actions .button {
+    min-width: 0;
+    padding: 8px;
+    font-size: 0.76rem;
+  }
+
+  .serve-button {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .screen--menu {
+    padding-right: 16px;
+    padding-left: 16px;
+    background-position: 55% center;
+  }
+
+  .menu-card {
+    padding: 23px 20px;
+  }
+
+  .game-over-card {
+    padding: 22px 16px;
+  }
+
+  .game-over-stats {
+    gap: 6px;
+  }
+
+  .game-over-stats div {
+    padding: 8px;
+  }
+
+  .game-over-stats dt {
+    font-size: 0.72rem;
+  }
+
+  .game-over-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .game-logo {
+    width: 100%;
+  }
+
+  .screen--how-to {
+    padding: 12px;
+  }
+
+  .guide-shell {
+    padding: 18px 14px;
+  }
+
+  .guide-header {
+    padding-top: 54px;
+  }
+
+  .guide-header h1 {
+    font-size: 2rem;
+  }
+
+  .guide-intro {
+    font-size: 0.92rem;
+  }
+
+  .step-card {
+    padding: 13px;
+  }
+
+  .sample-order {
+    display: block;
+  }
+
+  .sample-drink {
+    width: 130px;
+    height: 130px;
+  }
+
+  .guide-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .notice-dialog {
+    padding: 24px 18px;
+  }
+}
+

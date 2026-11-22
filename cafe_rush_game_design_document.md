@@ -184,8 +184,18 @@ Use HTML and CSS for menus, buttons, order cards, statistics, and ingredient con
 ```
 cafe-rush/
 ├── index.html
-├── style.css
-├── script.js
+├── styles/
+│   ├── main.css
+│   ├── base.css
+│   ├── menu.css
+│   ├── gameplay.css
+│   └── responsive.css
+├── scripts/
+│   ├── game.js
+│   ├── config/
+│   ├── core/
+│   ├── systems/
+│   └── ui/
 └── assets/
     ├── background/
     ├── customers/
