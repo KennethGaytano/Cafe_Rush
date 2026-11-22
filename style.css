@@ -1368,7 +1368,67 @@ button:focus-visible {
 }
 
 /* Reduced motion support */
+.intro-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #f5f0e8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  pointer-events: auto;
+  transition: opacity 0.5s ease, pointer-events 0.5s ease;
+}
+
+.intro-screen.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes logo-intro-scale-in {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.game-logo {
+  width: min(180px, 25vw);
+}
+
+.intro-screen:not(.hidden) .game-logo {
+  transform: scale(0.9);
+  opacity: 0;
+}
+
+.screen--menu {
+  transition: opacity 0.5s ease;
+}
+
+.screen--menu.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .intro-screen {
+    transition: opacity 0.01s ease, pointer-events 0.01s ease;
+  }
+  .intro-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .game-logo {
+    transition: none;
+  }
+}
   *,
   *::before,
   *::after {
