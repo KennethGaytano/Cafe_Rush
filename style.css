@@ -1331,56 +1331,28 @@ button:focus-visible {
   }
 }
 
-/* ===== Intro Animation ===== */
-
-/* Keyframes for logo scaling in */
-@keyframes intro-logo-scale {
-  from {
-    transform: scale(0);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-/* Keyframes for menu fading in */
-@keyframes intro-menu-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Intro animation for the logo - plays on load */
-.game-logo {
-  animation: intro-logo-scale 600ms cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-/* Intro animation for the menu card - plays after logo completes */
-.menu-card {
-  animation: intro-menu-fade-in 600ms cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 650ms;
-}
-
-/* Reduced motion support */
 .intro-screen {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #f5f0e8;
+  inset: 0;
+  z-index: 100;
   display: flex;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100svh;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 100;
-  pointer-events: auto;
-  transition: opacity 0.5s ease, pointer-events 0.5s ease;
+  gap: 24px;
+  padding: 24px;
+  overflow: hidden;
+  background:
+    linear-gradient(0deg, rgb(34 20 15 / 58%), rgb(34 20 15 / 12%) 55%, rgb(34 20 15 / 36%)),
+    url("assets/background/menu-cafe.png") center / cover no-repeat,
+    var(--coffee);
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 500ms ease;
 }
 
 .intro-screen.hidden {
@@ -1388,9 +1360,41 @@ button:focus-visible {
   pointer-events: none;
 }
 
-@keyframes logo-intro-scale-in {
+.intro-screen[hidden] {
+  display: none;
+}
+
+.intro-logo {
+  display: block;
+  width: min(560px, 86vw);
+  height: auto;
+  filter: drop-shadow(0 8px 18px rgb(34 20 15 / 55%));
+  animation: intro-logo-appear 700ms cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+.intro-hint {
+  position: absolute;
+  right: 20px;
+  bottom: max(28px, env(safe-area-inset-bottom));
+  left: 20px;
+  margin: 0;
+  color: #fff8ec;
+  font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-shadow: 0 2px 8px #21140f, 0 0 14px #21140f;
+  animation: intro-hint-appear 350ms ease 450ms both;
+  pointer-events: none;
+}
+
+.intro-hint--mobile {
+  display: none;
+}
+
+@keyframes intro-logo-appear {
   from {
-    transform: scale(0.9);
+    transform: scale(0.88);
     opacity: 0;
   }
   to {
@@ -1399,33 +1403,30 @@ button:focus-visible {
   }
 }
 
-.game-logo {
-  width: min(180px, 25vw);
+@keyframes intro-hint-appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.intro-screen:not(.hidden) .game-logo {
-  transform: scale(0.9);
-  opacity: 0;
-}
+@media (max-width: 700px) {
+  .intro-hint--desktop {
+    display: none;
+  }
 
-.screen--menu {
-  transition: opacity 0.5s ease;
-}
-
-.screen--menu.hidden {
-  opacity: 0;
-  pointer-events: none;
+  .intro-hint--mobile {
+    display: inline;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .intro-screen {
-    transition: opacity 0.01s ease, pointer-events 0.01s ease;
-  }
-  .intro-screen.hidden {
-    opacity: 0;
-    pointer-events: none;
-  }
-  .game-logo {
+  .intro-screen,
+  .intro-logo,
+  .intro-hint {
+    animation: none;
     transition: none;
   }
 }
@@ -1435,4 +1436,3 @@ button:focus-visible {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
   }
-}
