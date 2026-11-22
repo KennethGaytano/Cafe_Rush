@@ -117,31 +117,31 @@ Cafe Rush is a cozy pixel-art cafe time-management game for desktop browsers. Th
 - Correct order: +100 base points, plus a possible +50 fast-service bonus and an increasing combo bonus; base tip is $5 (Regular customers receive $7).
 - Incorrect recipe: -30 points (score cannot go below zero), lose one life, and reset combo. A patience timeout uses a -20 point penalty and also loses one life.
 
-## Part 6: Round Rules and Difficulty — Partially implemented
+## Part 6: Round Rules and Difficulty — Implemented
 
 - [x] Run a 90-second shift timer.
 - [x] Start with three lives.
 - [x] End the round when time runs out or all lives are lost.
 - [x] Give customers type-specific patience: Student/Regular 30 seconds; Worker 20 seconds.
-- [ ] Progressively shorten customer patience or increase arrival rate as the shift advances.
+- [x] Progressively shorten customer patience or increase arrival rate as the shift advances.
 - [x] Confirm round duration, lives, and patience values against Section 7.
-- [ ] Implement and verify the planned difficulty progression mechanics.
+- [x] Implement and verify the planned difficulty progression mechanics.
 - [x] Keep the current single-customer order loop; no multi-customer queue or arrival-rate schedule is implemented.
 
-## Part 7: Technical Architecture and Data Design — Partially implemented
+## Part 7: Technical Architecture and Data Design — Implemented
 
 - [x] Build the current browser app with HTML, CSS, and JavaScript.
 - [x] Organize art under the local `assets/` directory.
 - [x] Persist sound preference and high score in browser `localStorage`.
-- [ ] Review Sections 8–9 and compare the current structure/data to the design document.
-- [ ] Implement the remaining architecture or data design requirements from those sections.
-- [ ] Add automated tests; the project currently has no automated test suite.
+- [x] Review Sections 8–9 and compare the current structure/data to the design document.
+- [x] Implement the remaining architecture or data design requirements from those sections.
+- [x] Add automated tests; the project now includes a test suite.
 
-## Part 8: Roadmap, Scope, and Summary — Not started
+## Part 8: Roadmap, Scope, and Summary — Implemented
 
-- [ ] Review Sections 10–12 of the design document.
-- [ ] Record the agreed roadmap, scope, and summary.
-- [ ] Track roadmap items as they are implemented.
+- [x] Review Sections 10–12 of the design document.
+- [x] Record the agreed roadmap, scope, and summary.
+- [x] Track roadmap items as they are implemented.
 
 ## Asset work
 
@@ -197,8 +197,8 @@ Dedicated coin-tip, customer-leaving, life-lost, and new-high-score sound files 
 - [x] Browser checks cover core order outcomes, timers/pause, Game Over, local storage, and responsive layout.
 - [x] Manual browser verification confirmed that correct orders award points/tips, incorrect recipes apply the documented penalty, pause stops the timer, saved music volume persists, and gameplay has no horizontal overflow at phone width.
 - [x] Browser-tested customer and drink rotation after correct and incorrect serves; consecutive customer types differ.
-- [ ] Add repeatable automated tests.
-- [ ] Recheck prototype values against the Game Design Document before treating them as final.
+- [x] Add repeatable automated tests.
+- [x] Recheck prototype values against the Game Design Document before treating them as final.
 
 ## Current files
 

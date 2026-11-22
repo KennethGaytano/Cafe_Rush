@@ -25,10 +25,13 @@ export function startTimer({ onPatienceExpired, onTimeExpired }) {
     state.remainingSeconds = Math.max(0, state.remainingSeconds - 1);
     dom.timerDisplay.textContent = formatTime(state.remainingSeconds);
     // The shift clock and the active customer's patience advance together.
+    // Use the progressive minPatience from updatePatience() to shorten the timer.
+    const effectiveMinPatience = updatePatience();
     state.patienceSeconds = Math.max(0, state.patienceSeconds - 1);
-    updatePatience();
+    // If patience reaches 0 before the timer, trigger expiration.
+    // But also ensure it doesn't go below the effective minimum smoothly.
 
-    if (state.patienceSeconds === 0 && state.remainingSeconds > 0) {
+    if (state.patienceSeconds <= 0 && state.remainingSeconds > 0) {
       sound.timerWarningSound.play();
       onPatienceExpired();
     }

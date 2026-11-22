@@ -94,3 +94,11 @@
   text-align: right;
 }
 
+/* Click sound volume output */
+.click-sound-volume-output {
+  min-width: 3.2em;
+  color: var(--espresso);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+

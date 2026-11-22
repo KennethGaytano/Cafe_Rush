@@ -8,9 +8,6 @@ export const dom = {
   playButton: document.querySelector("#play-button"),
   howToButton: document.querySelector("#how-to-button"),
   menuSettingsButton: document.querySelector("#menu-settings-button"),
-  gameplaySettingsButton: document.querySelector(
-  "#gameplay-settings-button",
-),
   pauseSettingsButton: document.querySelector("#pause-settings-button"),
   backButton: document.querySelector("#back-button"),
   guideDoneButton: document.querySelector("#guide-done-button"),

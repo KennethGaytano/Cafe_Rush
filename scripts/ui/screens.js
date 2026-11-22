@@ -44,9 +44,6 @@ export function showHighScores() {
 
 export function showSettings(event) {
   state.settingsReturnFocus = event.currentTarget;
-  if (state.settingsReturnFocus === dom.gameplaySettingsButton) {
-    stopTimer();
-  }
   dom.settingsDialog.showModal();
   dom.settingsSoundButton.focus();
 }

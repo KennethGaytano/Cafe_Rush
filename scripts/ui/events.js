@@ -8,7 +8,7 @@ import {
   toggleIngredient,
 } from "../systems/ingredients.js";
 import { serveCurrentOrder } from "../systems/serving.js";
-import { adjustBackgroundMusicVolume, adjustClickSoundVolume, setBackgroundMusicVolume, setSoundEnabled } from "../systems/settings.js";
+import { adjustBackgroundMusicVolume, adjustClickSoundVolume, setBackgroundMusicVolume, setClickSoundVolume, setSoundEnabled } from "../systems/settings.js";
 import {
   beginShift,
   pauseShift,
@@ -22,17 +22,50 @@ export function bindGameEvents() {
   // Screen buttons connect player input to the matching game or navigation action.
   dom.playButton.addEventListener("click", () => {
     sound.clickSound.currentTime = 0;
-    sound.clickSound.play();
+    sound.clickSound.play().catch(() => {
+      // Autoplay may be blocked until user interaction
+    });
     beginShift();
   });
-  dom.howToButton.addEventListener("click", () => showScreen("how-to"));
-  dom.menuSettingsButton.addEventListener("click", showSettings);
-  dom.gameplaySettingsButton.addEventListener("click", showSettings);
-  dom.pauseSettingsButton.addEventListener("click", showSettings);
+  dom.howToButton.addEventListener("click", () => {
+    sound.clickSound.currentTime = 0;
+    sound.clickSound.play().catch(() => {
+      // Autoplay may be blocked until user interaction
+    });
+    showScreen("how-to");
+  });
+  dom.menuSettingsButton.addEventListener("click", async (event) => {
+    sound.clickSound.currentTime = 0;
+    try {
+      await sound.clickSound.play();
+    } catch (e) {
+      // Autoplay may be blocked until user interaction
+    }
+    showSettings(event);
+  });
+  dom.pauseSettingsButton.addEventListener("click", async (event) => {
+    sound.clickSound.currentTime = 0;
+    try {
+      await sound.clickSound.play();
+    } catch (e) {
+      // Autoplay may be blocked until user interaction
+    }
+    showSettings(event);
+  });
   dom.closeSettingsButton.addEventListener("click", () => dom.settingsDialog.close());
   dom.backButton.addEventListener("click", () => showScreen("menu"));
-  dom.guideDoneButton.addEventListener("click", () => showScreen("menu"));
-  dom.highScoresButton.addEventListener("click", showHighScores);
+  dom.guideDoneButton.addEventListener("click", () => {
+    sound.clickSound.currentTime = 0;
+    sound.clickSound.play().catch(() => {
+      // Autoplay may be blocked until user interaction
+    });
+    showScreen("menu");
+  });
+  dom.highScoresButton.addEventListener("click", () => {
+    sound.clickSound.currentTime = 0;
+    sound.clickSound.play();
+    showHighScores();
+  });
   dom.closeHighScoresButton.addEventListener("click", () => dom.highScoresDialog.close());
 
   dom.pauseButton.addEventListener("click", pauseShift);
@@ -125,6 +158,13 @@ export function bindGameEvents() {
   dom.backgroundMusicVolumeControls.forEach((control) => {
     control.addEventListener("input", () => {
       setBackgroundMusicVolume(Number(control.value) / 100);
+    });
+  });
+
+  // Click sound volume controls
+  document.querySelectorAll(".click-sound-volume").forEach((control) => {
+    control.addEventListener("input", () => {
+      setClickSoundVolume(Number(control.value) / 100);
     });
   });
 

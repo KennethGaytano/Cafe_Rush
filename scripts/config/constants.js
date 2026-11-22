@@ -36,6 +36,7 @@ const customerTypes = {
 const storageKeys = {
   soundEnabled: "cafeRush.soundEnabled",
   backgroundMusicVolume: "cafeRush.backgroundMusicVolume",
+  clickSoundVolume: "cafeRush.clickSoundVolume",
   highScore: "cafeRush.highScore",
 };
 

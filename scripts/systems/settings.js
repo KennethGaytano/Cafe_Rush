@@ -26,6 +26,16 @@ export function updateBackgroundMusicVolumeControls() {
   });
 }
 
+export function updateClickSoundVolumeControls() {
+  const percent = Math.round(state.clickSoundVolume * 100);
+  document.querySelectorAll(".click-sound-volume").forEach((control) => {
+    control.value = String(percent);
+  });
+  document.querySelectorAll(".click-sound-volume-output").forEach((output) => {
+    output.value = `${percent}%`;
+  });
+}
+
 export function setBackgroundMusicVolume(volume) {
   state.backgroundMusicVolume = Math.max(0, Math.min(1, volume));
   sound.backgroundMusic.volume = state.backgroundMusicVolume;
@@ -42,6 +52,22 @@ export function setBackgroundMusicVolume(volume) {
       "Background music volume could not be saved in this browser.";
     dom.highScoreStorageNotice.textContent =
       "Background music volume could not be saved in this browser.";
+  }
+}
+
+export function setClickSoundVolume(volume) {
+  state.clickSoundVolume = Math.max(0, Math.min(1, volume));
+  sound.clickSound.volume = state.clickSoundVolume;
+  sound.clickHoverSound.volume = state.clickSoundVolume;
+  updateClickSoundVolumeControls();
+
+  try {
+    window.localStorage.setItem(
+      config.storageKeys.clickSoundVolume,
+      String(state.clickSoundVolume),
+    );
+  } catch (error) {
+    console.error("Could not save Cafe Rush click sound volume.", error);
   }
 }
 
@@ -97,6 +123,21 @@ export function loadSavedSettings() {
         sound.backgroundMusic.volume = state.backgroundMusicVolume;
       }
     }
+    const storedClickSoundVolume = window.localStorage.getItem(
+      config.storageKeys.clickSoundVolume,
+    );
+    if (storedClickSoundVolume !== null) {
+      const parsedClickSoundVolume = Number(storedClickSoundVolume);
+      if (
+        Number.isFinite(parsedClickSoundVolume) &&
+        parsedClickSoundVolume >= 0 &&
+        parsedClickSoundVolume <= 1
+      ) {
+        state.clickSoundVolume = parsedClickSoundVolume;
+        sound.clickSound.volume = state.clickSoundVolume;
+        sound.clickHoverSound.volume = state.clickSoundVolume;
+      }
+    }
     const storedScore = Number(
       window.localStorage.getItem(config.storageKeys.highScore),
     );
@@ -117,5 +158,6 @@ export function loadSavedSettings() {
       : "Sound: Off";
   });
   updateBackgroundMusicVolumeControls();
+  updateClickSoundVolumeControls();
   dom.menuHighScore.textContent = String(state.highScore);
 }
