@@ -14,7 +14,12 @@
 </head>
 <body>
   <main id="game">
-    <section class="screen screen--menu is-active" id="menu-screen" aria-labelledby="menu-title">
+    <!-- Intro screen: shows logo first, then fades out to reveal main menu -->
+    <div class="intro-screen" id="intro-screen">
+      <img class="game-logo" src="assets/ui/logo.png" alt="Cafe Rush">
+    </div>
+
+    <section class="screen screen--menu" id="menu-screen" aria-labelledby="menu-title">
       <div class="menu-card">
         <img class="game-logo" src="assets/ui/logo.png" alt="Cafe Rush">
         <p class="menu-kicker">A cozy little coffee shop. A very busy day.</p>
