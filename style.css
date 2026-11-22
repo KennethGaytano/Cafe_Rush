@@ -214,9 +214,11 @@ button:focus-visible {
 .menu-credit {
   position: absolute;
   bottom: 20px;
-  left: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   color: #fff8ec;
   font-size: 0.85rem;
+  text-align: center;
   text-shadow: 0 2px 6px #21140f;
 }
 
