@@ -4,12 +4,24 @@ const gameplayScreen = document.querySelector("#gameplay-screen");
 const gameOverScreen = document.querySelector("#game-over-screen");
 const playButton = document.querySelector("#play-button");
 const howToButton = document.querySelector("#how-to-button");
+const menuSettingsButton = document.querySelector("#menu-settings-button");
+const gameplaySettingsButton = document.querySelector(
+  "#gameplay-settings-button",
+);
+const pauseSettingsButton = document.querySelector("#pause-settings-button");
 const backButton = document.querySelector("#back-button");
 const guideDoneButton = document.querySelector("#guide-done-button");
 const highScoresButton = document.querySelector("#high-scores-button");
-const menuSoundButton = document.querySelector("#menu-sound-button");
-const pauseSoundButton = document.querySelector("#pause-sound-button");
+const settingsSoundButton = document.querySelector("#settings-sound-button");
+const backgroundMusicVolumeControls = [
+  ...document.querySelectorAll(".background-music-volume"),
+];
+const backgroundMusicVolumeOutputs = [
+  ...document.querySelectorAll(".background-music-volume-output"),
+];
 const highScoresDialog = document.querySelector("#high-scores-dialog");
+const settingsDialog = document.querySelector("#settings-dialog");
+const closeSettingsButton = document.querySelector("#close-settings-button");
 const closeHighScoresButton = document.querySelector(
   "#close-high-scores-button",
 );
@@ -20,7 +32,6 @@ const pauseDialog = document.querySelector("#pause-dialog");
 const resumeButton = document.querySelector("#resume-button");
 const restartButton = document.querySelector("#restart-button");
 const exitGameButton = document.querySelector("#exit-game-button");
-const soundButton = document.querySelector("#sound-button");
 const ingredientButtons = [...document.querySelectorAll(".ingredient-button")];
 const trayItems = document.querySelector("#tray-items");
 const trayEmpty = document.querySelector("#tray-empty");
@@ -57,6 +68,7 @@ const highScoreStorageNotice = document.querySelector(
 );
 const playAgainButton = document.querySelector("#play-again-button");
 const gameOverMenuButton = document.querySelector("#game-over-menu-button");
+let settingsReturnFocus = null;
 
 // Sound settings
 let clickSoundVolume = 0.5;
@@ -82,9 +94,35 @@ function adjustClickSoundVolume(delta) {
 }
 
 function adjustBackgroundMusicVolume(delta) {
-  backgroundMusicVolume = Math.max(0, Math.min(1, backgroundMusicVolume + delta));
-  backgroundMusic.volume = backgroundMusicVolume;
+  setBackgroundMusicVolume(backgroundMusicVolume + delta);
   return backgroundMusicVolume;
+}
+
+function updateBackgroundMusicVolumeControls() {
+  const percent = Math.round(backgroundMusicVolume * 100);
+  backgroundMusicVolumeControls.forEach((control) => {
+    control.value = String(percent);
+  });
+  backgroundMusicVolumeOutputs.forEach((output) => {
+    output.value = `${percent}%`;
+  });
+}
+
+function setBackgroundMusicVolume(volume) {
+  backgroundMusicVolume = Math.max(0, Math.min(1, volume));
+  backgroundMusic.volume = backgroundMusicVolume;
+  updateBackgroundMusicVolumeControls();
+
+  try {
+    window.localStorage.setItem(
+      storageKeys.backgroundMusicVolume,
+      String(backgroundMusicVolume),
+    );
+  } catch (error) {
+    console.error("Could not save Cafe Rush background music volume.", error);
+    menuStatus.textContent =
+      "Background music volume could not be saved in this browser.";
+  }
 }
 
 const roundLength = 90;
@@ -144,10 +182,11 @@ const patienceValue = document.querySelector("#patience-value");
 const patienceTrack = document.querySelector(".patience-track");
 const patienceFill = document.querySelector("#patience-fill");
 const livesDisplay = document.querySelector("#lives-display");
-const soundButtons = [menuSoundButton, soundButton, pauseSoundButton];
+const soundButtons = [settingsSoundButton];
 
 const storageKeys = {
   soundEnabled: "cafeRush.soundEnabled",
+  backgroundMusicVolume: "cafeRush.backgroundMusicVolume",
   highScore: "cafeRush.highScore",
 };
 
@@ -194,7 +233,9 @@ function setSoundEnabled(enabled) {
   soundEnabled = enabled;
   soundButtons.forEach((button) => {
     button.setAttribute("aria-pressed", String(soundEnabled));
-    button.lastChild.textContent = soundEnabled ? " Sound: On" : " Sound: Off";
+    button.querySelector(".sound-toggle-label").textContent = soundEnabled
+      ? "Sound: On"
+      : "Sound: Off";
   });
 
   // Control background music
@@ -224,6 +265,20 @@ function loadSavedSettings() {
   try {
     soundEnabled =
       window.localStorage.getItem(storageKeys.soundEnabled) === "true";
+    const storedMusicVolume = window.localStorage.getItem(
+      storageKeys.backgroundMusicVolume,
+    );
+    if (storedMusicVolume !== null) {
+      const parsedMusicVolume = Number(storedMusicVolume);
+      if (
+        Number.isFinite(parsedMusicVolume) &&
+        parsedMusicVolume >= 0 &&
+        parsedMusicVolume <= 1
+      ) {
+        backgroundMusicVolume = parsedMusicVolume;
+        backgroundMusic.volume = backgroundMusicVolume;
+      }
+    }
     const storedScore = Number(
       window.localStorage.getItem(storageKeys.highScore),
     );
@@ -239,8 +294,11 @@ function loadSavedSettings() {
 
   soundButtons.forEach((button) => {
     button.setAttribute("aria-pressed", String(soundEnabled));
-    button.lastChild.textContent = soundEnabled ? " Sound: On" : " Sound: Off";
+    button.querySelector(".sound-toggle-label").textContent = soundEnabled
+      ? "Sound: On"
+      : "Sound: Off";
   });
+  updateBackgroundMusicVolumeControls();
   menuHighScore.textContent = String(highScore);
 }
 
@@ -525,12 +583,25 @@ function showHighScores() {
   closeHighScoresButton.focus();
 }
 
+function showSettings(event) {
+  settingsReturnFocus = event.currentTarget;
+  if (settingsReturnFocus === gameplaySettingsButton) {
+    stopTimer();
+  }
+  settingsDialog.showModal();
+  settingsSoundButton.focus();
+}
+
 playButton.addEventListener("click", () => {
   clickSound.currentTime = 0;
   clickSound.play();
   beginShift();
 });
 howToButton.addEventListener("click", () => showScreen("how-to"));
+menuSettingsButton.addEventListener("click", showSettings);
+gameplaySettingsButton.addEventListener("click", showSettings);
+pauseSettingsButton.addEventListener("click", showSettings);
+closeSettingsButton.addEventListener("click", () => settingsDialog.close());
 backButton.addEventListener("click", () => showScreen("menu"));
 guideDoneButton.addEventListener("click", () => showScreen("menu"));
 highScoresButton.addEventListener("click", showHighScores);
@@ -570,6 +641,21 @@ pauseDialog.addEventListener("close", () => {
 pauseDialog.addEventListener("cancel", (event) => {
   event.preventDefault();
   resumeShift();
+});
+
+settingsDialog.addEventListener("close", () => {
+  if (
+    remainingSeconds > 0 &&
+    gameplayScreen.hidden === false &&
+    !pauseDialog.open &&
+    timerInterval === null
+  ) {
+    startTimer();
+  }
+  if (settingsReturnFocus?.isConnected) {
+    settingsReturnFocus.focus();
+  }
+  settingsReturnFocus = null;
 });
 
 document.addEventListener("keydown", (event) => {
@@ -684,25 +770,16 @@ serveButton.addEventListener("click", () => {
   setServiceEnabled(true);
 });
 
-soundButton.addEventListener("click", () => {
-  clickSound.currentTime = 0;
-  clickSound.play();
-  setSoundEnabled(!soundEnabled);
-  gameMessage.textContent = soundEnabled
-    ? "Sound setting is on. Sound effects are not added yet."
-    : "Sound setting is off.";
-});
-
-menuSoundButton.addEventListener("click", () => {
+settingsSoundButton.addEventListener("click", () => {
   clickSound.currentTime = 0;
   clickSound.play();
   setSoundEnabled(!soundEnabled);
 });
 
-pauseSoundButton.addEventListener("click", () => {
-  clickSound.currentTime = 0;
-  clickSound.play();
-  setSoundEnabled(!soundEnabled);
+backgroundMusicVolumeControls.forEach((control) => {
+  control.addEventListener("input", () => {
+    setBackgroundMusicVolume(Number(control.value) / 100);
+  });
 });
 
 /* Volume control keyboard shortcuts */

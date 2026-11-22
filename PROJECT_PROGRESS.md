@@ -162,6 +162,7 @@ Cafe Rush is a cozy pixel-art cafe time-management game for desktop browsers. Th
 - [x] Shift start sound - plays when player begins a new shift
 - [x] Shift pause sound - plays when shift is paused
 - [x] Shift resume sound - plays when shift is resumed
+- [x] Settings dialog provides the sound toggle and background-music volume slider, accessible from the menu, gameplay, and pause dialog; volume applies immediately and is saved between visits.
 - [x] Ingredient select/deselect sound - plays when toggling ingredients
 - [x] Clear tray sound - plays when clear button is clicked
 - [x] Prepare drink sound - plays when prepare button is clicked
@@ -179,6 +180,7 @@ Remaining sound effects to add:
 - [x] `node --check script.js` passes.
 - [x] Fixed duplicate sound declarations that caused a JavaScript syntax error and prevented all button handlers from loading.
 - [x] Browser-tested menu, help/high-score dialogs, sound toggle, shift start, ingredient preparation/serving, pause/resume, and return to menu after the fix.
+- [x] Browser-tested Settings access from the menu, gameplay, and pause dialog; verified slider persistence, focus return, and that gameplay pauses while Settings is open.
 - [x] Browser checks cover core order outcomes, timers/pause, Game Over, local storage, and responsive layout.
 - [x] Browser-tested customer and drink rotation after correct and incorrect serves; consecutive customer types differ.
 - [ ] Add repeatable automated tests.

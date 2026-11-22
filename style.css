@@ -162,8 +162,38 @@ button:focus-visible {
   line-height: 1.4;
 }
 
-.menu-actions .sound-toggle {
-  min-height: 46px;
+.volume-control {
+  display: grid;
+  gap: 6px;
+  color: var(--coffee);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+.volume-control__input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.volume-control input[type="range"] {
+  width: 100%;
+  min-width: 0;
+  accent-color: var(--espresso);
+  cursor: pointer;
+}
+
+.volume-control input[type="range"]:focus-visible {
+  outline: 3px solid var(--espresso);
+  outline-offset: 3px;
+}
+
+.background-music-volume-output {
+  min-width: 3.2em;
+  color: var(--espresso);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
 }
 
 .menu-credit {
@@ -998,6 +1028,21 @@ button:focus-visible {
   min-height: 44px;
   padding: 8px 13px;
   font-size: 0.84rem;
+}
+
+.notice-actions .volume-control {
+  padding: 10px 12px;
+  border: 1px solid rgb(117 76 53 / 28%);
+  border-radius: 8px;
+  background: rgb(255 248 236 / 65%);
+}
+
+.settings-dialog .notice-actions {
+  margin-top: 20px;
+}
+
+.settings-dialog .sound-toggle {
+  width: 100%;
 }
 
 .control-actions button:disabled {

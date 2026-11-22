@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#3b241b">
+  <link rel="icon" href="assets/favicon.svg">
   <title>Cafe Rush</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -24,9 +25,7 @@
             How to play
           </button>
           <button class="button button--secondary" id="high-scores-button" type="button">High Scores</button>
-          <button class="button button--secondary sound-toggle" id="menu-sound-button" type="button" aria-pressed="false">
-            <span aria-hidden="true">♫</span> Sound: Off
-          </button>
+          <button class="button button--secondary" id="menu-settings-button" type="button">Settings</button>
         </nav>
         <p class="menu-status" id="menu-status" role="status" aria-live="polite"></p>
         <p class="menu-note">Make every cup count.</p>
@@ -242,13 +241,11 @@
         <footer class="game-controls">
           <p>Make the drink, then serve it to your customer.</p>
           <div class="control-actions">
-            <button class="button button--secondary sound-toggle" id="sound-button" type="button" aria-pressed="false">
-              <span aria-hidden="true">♫</span> Sound: Off
-            </button>
             <button class="button button--primary serve-button" id="serve-button" type="button" disabled>Serve drink</button>
             <button class="button button--secondary pause-button" id="pause-button" type="button">
               <span aria-hidden="true">Ⅱ</span> Pause
             </button>
+            <button class="button button--secondary" id="gameplay-settings-button" type="button">Settings</button>
           </div>
         </footer>
       </div>
@@ -260,12 +257,30 @@
       <h2 id="pause-title">Shift paused</h2>
       <p>Your shift timer is stopped. Ready to get back to the counter?</p>
       <div class="notice-actions">
-        <button class="button button--secondary sound-toggle" id="pause-sound-button" type="button" aria-pressed="false">
-          <span aria-hidden="true">♫</span> Sound: Off
-        </button>
+        <button class="button button--secondary" id="pause-settings-button" type="button">Settings</button>
         <button class="button button--primary" id="resume-button" type="button">Resume shift</button>
         <button class="button button--secondary" id="restart-button" type="button">Restart shift</button>
         <button class="button button--secondary" id="exit-game-button" type="button">Main menu</button>
+      </div>
+    </dialog>
+
+    <dialog class="notice-dialog settings-dialog" id="settings-dialog" aria-labelledby="settings-title">
+      <div class="notice-icon" aria-hidden="true">⚙</div>
+      <p class="section-kicker">Make it yours</p>
+      <h2 id="settings-title">Settings</h2>
+      <div class="notice-actions">
+        <button class="button button--secondary sound-toggle" id="settings-sound-button" type="button" aria-pressed="false">
+          <span aria-hidden="true">♫</span>
+          <span class="sound-toggle-label">Sound: Off</span>
+        </button>
+        <div class="volume-control">
+          <label for="settings-music-volume">Background music volume</label>
+          <div class="volume-control__input">
+            <input class="background-music-volume" id="settings-music-volume" type="range" min="0" max="100" step="1" value="50">
+            <output class="background-music-volume-output" for="settings-music-volume">50%</output>
+          </div>
+        </div>
+        <button class="button button--primary" id="close-settings-button" type="button">Done</button>
       </div>
     </dialog>
 
