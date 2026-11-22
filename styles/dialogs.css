@@ -39,6 +39,30 @@
   margin-top: 22px;
 }
 
+.settings-dialog .notice-actions {
+  margin-top: 20px;
+}
+
+@media (min-width: 701px) {
+  .notice-dialog {
+    padding: 34px 36px;
+  }
+
+  .notice-dialog .notice-icon {
+    margin-bottom: 10px;
+  }
+
+  .notice-dialog h2 {
+    margin-bottom: 12px;
+  }
+
+  .notice-actions,
+  .settings-dialog .notice-actions {
+    gap: 12px;
+    margin-top: 24px;
+  }
+}
+
 .high-score-value {
   display: grid;
   justify-items: center;
