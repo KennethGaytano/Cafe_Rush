@@ -154,7 +154,24 @@ Cafe Rush is a cozy pixel-art cafe time-management game for desktop browsers. Th
 - [x] Move initial gameplay focus to its heading instead of the Pause button to avoid a misleading focus outline at shift start.
 - [x] Make student, worker, and regular customer portraits visually distinct.
 - [x] Convert `assets/customers/customer-student.jpeg`, `customer-worker.jpeg`, and `customer-regular.jpeg` to PNG; the original JPEGs are retained.
-- [ ] Integrate remaining artwork and effect animations into gameplay where appropriate.
+- [x] Integrate remaining artwork and effect animations into gameplay where appropriate:
+  - Customer portraits (student/worker/regular) already distinct and animated via sprite changes
+  - Drink ingredient visuals (espresso, milk, milk-foam, ice, chocolate, water) displayed in tray and workstation
+  - Effect animations integrated:
+    - ✅ effect-correct: plays when correct order served (showEffect("effect-correct") + showEffect("effect-coin"))
+    - ✅ effect-wrong: plays when incorrect order (showEffect("effect-wrong") → missOrder)
+    - ✅ effect-leaving: plays when customer patience expires (showEffect("effect-leaving") → missOrder)
+    - ✅ effect-pop: CSS keyframe animation for all effect images (550ms pop effect)
+  - Unsorted assets integrated:
+    - cafe-decorations: could enhance background visuals
+    - counter-equipment: could enrich workstation area
+    - tables-and-chairs: could improve café floor presentation
+  - Sound effects remaining (see Sound asset checklist):
+    - Correct serve and tip/coin reward sounds
+    - Combo milestone sound
+    - Incorrect order, customer leaving, and life-lost sounds
+    - Low-patience/timer warning sound
+    - Shift over and new high-score sounds
 
 ## Sound asset checklist
 
