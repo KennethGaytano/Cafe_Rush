@@ -52,7 +52,13 @@ export function bindGameEvents() {
     }
     showSettings(event);
   });
-  dom.closeSettingsButton.addEventListener("click", () => dom.settingsDialog.close());
+  dom.closeSettingsButton.addEventListener("click", () => {
+    sound.clickSound.currentTime = 0;
+    sound.clickSound.play().catch(() => {
+      // Autoplay may be blocked until user interaction
+    });
+    dom.settingsDialog.close();
+  });
   dom.backButton.addEventListener("click", () => showScreen("menu"));
   dom.guideDoneButton.addEventListener("click", () => {
     sound.clickSound.currentTime = 0;
