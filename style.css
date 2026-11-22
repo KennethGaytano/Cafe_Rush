@@ -1331,6 +1331,43 @@ button:focus-visible {
   }
 }
 
+/* ===== Intro Animation ===== */
+
+/* Keyframes for logo scaling in */
+@keyframes intro-logo-scale {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Keyframes for menu fading in */
+@keyframes intro-menu-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Intro animation for the logo - plays on load */
+.game-logo {
+  animation: intro-logo-scale 600ms cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Intro animation for the menu card - plays on load */
+.menu-card {
+  animation: intro-menu-fade-in 600ms cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 200ms;
+}
+
+/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
