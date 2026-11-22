@@ -22,12 +22,12 @@ Cafe Rush is a cozy pixel-art cafe time-management game for desktop browsers. Th
 ## Part 1: Game Overview and Design Direction — Reviewed
 
 - [x] Discussed the game concept, arcade/time-management loop, visual direction, and beginner-friendly first steps.
-- [x] Confirmed the implementation against the Game Design Document (`Game_Design/Cafe_Rush_Game_Design_Document.pdf`):
+- [x] Compared the implementation with the Game Design Document (`cafe_rush_game_design_document.md`):
   - Cafe time-management arcade loop: serve drinks before customer patience expires.
   - Pixel-art visual direction with `image-rendering: pixelated` on all sprites.
   - 90-second shift timer, 3 starting lives, 30-second customer patience.
   - Four drink recipes: Americano, Cappuccino, Iced Latte, Mocha.
-  - Scoring: +100 points, +$5 tip, +1 combo per correct order; -25 points, -1 life, combo reset for wrong/missed orders.
+  - Scoring: +100 base points, +$5 base tip, fast-service/combo bonuses; incorrect recipes lose 30 points and one life, while missed customers lose 20 points and one life.
   - localStorage persistence for high score and sound preference.
 - [x] Recorded final visual/design decisions made during implementation:
   - Theme color: #3b241b (dark coffee brown).
@@ -114,21 +114,19 @@ Cafe Rush is a cozy pixel-art cafe time-management game for desktop browsers. Th
 
 ### Current prototype values (not confirmed as final)
 
-- Correct order: +100 points, +$5, and +1 combo.
-- Incorrect or missed order: -25 points (score cannot go below zero), lose one life, and reset combo.
+- Correct order: +100 base points, plus a possible +50 fast-service bonus and an increasing combo bonus; base tip is $5 (Regular customers receive $7).
+- Incorrect recipe: -30 points (score cannot go below zero), lose one life, and reset combo. A patience timeout uses a -20 point penalty and also loses one life.
 
-## Part 6: Round Rules and Difficulty — Implemented
+## Part 6: Round Rules and Difficulty — Partially implemented
 
 - [x] Run a 90-second shift timer.
 - [x] Start with three lives.
 - [x] End the round when time runs out or all lives are lost.
-- [x] Give each customer 30 seconds of patience.
-- [x] Implement difficulty progression: patience and customer arrival rate decrease as shift progresses.
-  - Patience decreases from type-specific max to 20s over the 90-second shift
-  - Customer arrival rate increases: first customer at 8s interval, then 6s, then 4s
-  - Later customers have shorter patience (reduced from type-specific max)
+- [x] Give customers type-specific patience: Student/Regular 30 seconds; Worker 20 seconds.
+- [ ] Progressively shorten customer patience or increase arrival rate as the shift advances.
 - [x] Confirm round duration, lives, and patience values against Section 7.
-- [x] Implement difficulty progression mechanics.
+- [ ] Implement and verify the planned difficulty progression mechanics.
+- [x] Keep the current single-customer order loop; no multi-customer queue or arrival-rate schedule is implemented.
 
 ## Part 7: Technical Architecture and Data Design — Partially implemented
 
@@ -147,13 +145,13 @@ Cafe Rush is a cozy pixel-art cafe time-management game for desktop browsers. Th
 
 ## Asset work
 
-- [x] Create the original minimum customer, UI, and gameplay-effect PNG files listed in `MISSING.md`.
+- [x] Create the customer, UI, and gameplay-effect PNG assets used by the current interface.
 - [x] Add browser-tab icons with SVG, PNG, and ICO alternatives, plus an Apple touch icon.
 - [x] Repair the game intro, use the cafe scene as a full-screen background, add keyboard/tap-to-play hints, and honor reduced-motion preferences.
 - [x] Remove the extra focus box-shadow that made the Start your shift keyboard outline look doubled.
 - [x] Move initial gameplay focus to its heading instead of the Pause button to avoid a misleading focus outline at shift start.
 - [x] Make student, worker, and regular customer portraits visually distinct.
-- [x] Convert `assets/customers/customer-student.jpeg`, `customer-worker.jpeg`, and `customer-regular.jpeg` to PNG; the original JPEGs are retained.
+- [x] Use distinct PNG portraits for student, worker, and regular customers; no JPEG source portraits are present in the current project tree.
 - [x] Integrate remaining artwork and effect animations into gameplay where appropriate:
   - Customer portraits (student/worker/regular) already distinct and animated via sprite changes
   - Drink ingredient visuals (espresso, milk, milk-foam, ice, chocolate, water) displayed in tray and workstation
@@ -162,56 +160,54 @@ Cafe Rush is a cozy pixel-art cafe time-management game for desktop browsers. Th
     - ✅ effect-wrong: plays when incorrect order (showEffect("effect-wrong") → missOrder)
     - ✅ effect-leaving: plays when customer patience expires (showEffect("effect-leaving") → missOrder)
     - ✅ effect-pop: CSS keyframe animation for all effect images (550ms pop effect)
-  - Unsorted assets integrated:
-    - cafe-decorations: could enhance background visuals
-    - counter-equipment: could enrich workstation area
-    - tables-and-chairs: could improve café floor presentation
-  - Sound effects remaining (see Sound asset checklist):
-    - Correct serve and tip/coin reward sounds
-    - Combo milestone sound
-    - Incorrect order, customer leaving, and life-lost sounds
-    - Low-patience/timer warning sound
-    - Shift over and new high-score sounds
+  - Unused customer animation sheets, environment components, and decorative UI images were removed after checking runtime references.
+  - Dedicated coin-tip, customer-leaving, life-lost, and new-high-score sounds are not available in the project.
 
 ## Sound asset checklist
 
 ### Integrated sound effects:
 
-- [x] Cafe ambience / background music - loops during gameplay, respects sound on/off setting
-- [x] Button hover sound - plays on ingredient button clicks
-- [x] Button click sound - plays on sound toggle, menu buttons, game controls
-- [x] Shift start sound - plays when player begins a new shift
-- [x] Shift pause sound - plays when shift is paused
-- [x] Shift resume sound - plays when shift is resumed
+- [x] Cafe background music loops and follows the sound setting and saved volume.
+- [x] Click sound plays for menu, game controls, ingredient selection, prepare, clear, and serve.
+- [x] Correct-serve and combo sounds play from existing audio files.
+- [x] Incorrect-order feedback uses the existing incorrect-order sound.
+- [x] Timer warning uses the existing `timer-warning.mp3`.
+- [x] Shift-over sound plays when the round ends.
 - [x] Settings dialog provides the sound toggle and background-music volume slider, accessible from the menu, gameplay, and pause dialog; volume applies immediately and is saved between visits.
-- [x] Ingredient select/deselect sound - plays when toggling ingredients
-- [x] Clear tray sound - plays when clear button is clicked
-- [x] Prepare drink sound - plays when prepare button is clicked
-- [x] Serve drink sound - plays when serve button is clicked
 
-Remaining sound effects to add:
-- [ ] Correct serve and tip/coin reward sounds
-- [ ] Combo milestone sound
-- [ ] Incorrect order, customer leaving, and life-lost sounds
-- [ ] Low-patience/timer warning sound.
-- [ ] Shift over and new high-score sounds.
+Dedicated coin-tip, customer-leaving, life-lost, and new-high-score sound files are not included. The coin reward remains a visual effect.
 
 ## Validation notes
 
-- [x] `node --check script.js` passes.
+- [x] `node --check scripts/game.js` passes.
+- [x] Fixed missing audio file references by using the existing timer-warning sound and removing playback calls for unavailable clips.
+- [x] Removed unused variables and the unused `.recipe-label` style.
+- [x] Corrected reduced-motion CSS so transition overrides only apply when reduced motion is requested.
+- [x] Removed generated Playwright snapshots/logs from the project; the `.playwright-mcp/` folder remains ignored by Git.
+- [x] Removed unused image files after checking HTML, CSS, JavaScript, and browser-icon references; retained images are used by the game or as browser icons.
+- [x] Split styles into focused CSS modules and JavaScript into ES modules for configuration, shared state/DOM, gameplay systems, and UI interactions; updated relative paths and preserved existing comments.
+- [x] Audited all runtime asset paths; no active HTML, CSS, or JavaScript references are missing.
 - [x] Fixed duplicate sound declarations that caused a JavaScript syntax error and prevented all button handlers from loading.
+- [x] Fixed `loadSavedSettings()` to wait for DOMContentLoaded, preventing DOM access errors when DOM isn't fully loaded
+- [x] Fixed `setBackgroundMusicVolume` catch block to consistently update `highScoreStorageNotice` alongside `menuStatus`
+- [x] Fixed `correctServeSound` to play on every correct serve (was declared but never played)
 - [x] Browser-tested menu, help/high-score dialogs, sound toggle, shift start, ingredient preparation/serving, pause/resume, and return to menu after the fix.
 - [x] Browser-tested the full-screen intro at desktop and mobile sizes, cafe background, responsive Enter/tap hint, Enter/click activation, reduced-motion bypass, and menu flow; no browser console errors.
 - [x] Browser-tested Settings access from the menu, gameplay, and pause dialog; verified slider persistence, focus return, and that gameplay pauses while Settings is open.
 - [x] Browser checks cover core order outcomes, timers/pause, Game Over, local storage, and responsive layout.
+- [x] Manual browser verification confirmed that correct orders award points/tips, incorrect recipes apply the documented penalty, pause stops the timer, saved music volume persists, and gameplay has no horizontal overflow at phone width.
 - [x] Browser-tested customer and drink rotation after correct and incorrect serves; consecutive customer types differ.
 - [ ] Add repeatable automated tests.
-- [ ] Recheck prototype values against the attached Game Design Document before treating them as final.
+- [ ] Recheck prototype values against the Game Design Document before treating them as final.
 
 ## Current files
 
 - `index.html`: screen and interface markup.
-- `style.css`: responsive visual styling.
-- `script.js`: screen navigation, recipes, timers, prototype scoring, persistence, and Game Over behavior.
+- `styles/`: ordered, responsibility-focused stylesheets imported by `main.css`.
+- `scripts/game.js`: ES-module entry point.
+- `scripts/config/`: recipe, customer, storage, and scoring constants.
+- `scripts/core/`: shared DOM references, game state, and intro flow.
+- `scripts/systems/`: audio, settings, customers, ingredients, timers, effects, scoring, and shift lifecycle.
+- `scripts/ui/`: screen navigation and player event bindings.
 - `assets/`: game art and sprites.
 - `PROJECT_PROGRESS.md`: this project handoff and all-parts checklist.
