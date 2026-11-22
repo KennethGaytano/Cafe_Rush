@@ -324,6 +324,13 @@ function finishIntro() {
     introScreen.hidden = true;
     playButton.focus();
   }, 500);
+  // Start background music after intro, respecting user's sound preference
+  if (soundEnabled && backgroundMusic) {
+    backgroundMusic.play().catch(() => {
+      // Autoplay policy may prevent playback until user interaction
+      // The music will start when the shift begins instead
+    });
+  }
 }
 
 function startIntro() {
