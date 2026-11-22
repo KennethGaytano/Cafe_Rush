@@ -148,6 +148,7 @@ Cafe Rush is a cozy pixel-art cafe time-management game for desktop browsers. Th
 ## Asset work
 
 - [x] Create the original minimum customer, UI, and gameplay-effect PNG files listed in `MISSING.md`.
+- [x] Add browser-tab icons with SVG, PNG, and ICO alternatives, plus an Apple touch icon.
 - [x] Make student, worker, and regular customer portraits visually distinct.
 - [x] Convert `assets/customers/customer-student.jpeg`, `customer-worker.jpeg`, and `customer-regular.jpeg` to PNG; the original JPEGs are retained.
 - [ ] Integrate remaining artwork and effect animations into gameplay where appropriate.
