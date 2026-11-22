@@ -221,7 +221,7 @@ function showScreen(screenName) {
   if (screenName === "how-to") {
     howToScreen.querySelector("h1").focus();
   } else if (screenName === "gameplay") {
-    pauseButton.focus();
+    gameplayScreen.querySelector("h1").focus();
   } else if (screenName === "game-over") {
     gameOverTitle.focus();
   } else {
@@ -306,91 +306,42 @@ function formatTime(seconds) {
   const minutes = Math.floor(seconds / 60)
     .toString()
     .padStart(2, "0");
-  // ===== Intro Animation Timing =====
-// All times in milliseconds
-const INTRO_PAUSE = 200;         // Pause before logo animation starts
-const LOGO_FADE_DURATION = 1000; // Logo fade-in and scale duration
-const LOGO_HOLD_TIME = 3000;     // How long logo stays full before fade-out
-const FADE_OUT_DURATION = 500;   // Intro fade-out duration
-
-const skipIntroBtn = document.getElementById('skip-intro-btn');
-
-function initIntro() {
-  const introScreen = document.getElementById('intro-screen');
-  const menuScreen = document.getElementById('menu-screen');
-  const gameLogo = document.querySelector('.game-logo');
-
-  if (!introScreen || !menuScreen || !gameLogo) return;
-
-  // Start the intro sequence after a very short delay to let page render
-  setTimeout(() => {
-    runIntroSequence(introScreen, menuScreen, gameLogo);
-  }, 50);
+  const remainder = (seconds % 60).toString().padStart(2, "0");
+  return `${minutes}:${remainder}`;
 }
 
-function runIntroSequence(introScreen, menuScreen, gameLogo) {
-  // Show the logo and start its animation
-  gameLogo.style.transform = 'scale(0.9)';
-  gameLogo.style.opacity = '0';
-  gameLogo.style.transition = `transform ${LOGO_FADE_DURATION}ms ease, opacity ${LOGO_FADE_DURATION}ms ease`;
+const introScreen = document.querySelector("#intro-screen");
+let introFinished = false;
 
-  // After pause, start logo animation
-  setTimeout(() => {
-    gameLogo.style.transform = 'scale(1)';
-    gameLogo.style.opacity = '1';
-  }, 0);
-
-  // After logo fade + hold time, fade out intro and show menu
-  setTimeout(() => {
-    fadeOutIntro(introScreen, menuScreen);
-  }, INTRO_PAUSE + LOGO_FADE_DURATION + LOGO_HOLD_TIME);
-}
-
-function fadeOutIntro(introScreen, menuScreen) {
-  introScreen.classList.add('hidden');
-
-  // After fade-out completes, hide intro entirely and show menu
-  setTimeout(() => {
-    introScreen.style.display = 'none';
-    menuScreen.classList.remove('hidden');
-    menuScreen.classList.add('is-active');
-  }, FADE_OUT_DURATION);
-}
-
-// Skip intro on click or touch
-function setupSkipIntro() {
-  const introScreen = document.getElementById('intro-screen');
-  if (!introScreen) return;
-
-  // Skip button if exists
-  const skipBtn = document.getElementById('skip-intro-btn');
-  if (skipBtn) {
-    skipBtn.addEventListener('click', skipIntroManually);
+function finishIntro() {
+  if (introFinished) {
+    return;
   }
-
-  // Click/tap anywhere on intro screen to skip
-  introScreen.addEventListener('click', skipIntroManually);
-  introScreen.addEventListener('touchstart', skipIntroManually, { passive: true });
+  introFinished = true;
+  introScreen.classList.add("hidden");
+  menuScreen.hidden = false;
+  window.setTimeout(() => {
+    introScreen.hidden = true;
+    playButton.focus();
+  }, 500);
 }
 
-function skipIntroManually() {
-  const introScreen = document.getElementById('intro-screen');
-  const menuScreen = document.getElementById('menu-screen');
-
-  if (!introScreen || !menuScreen) return;
-
-  // Immediately fade out intro and show menu
-  introScreen.classList.add('hidden');
-  setTimeout(() => {
-    introScreen.style.display = 'none';
-    menuScreen.classList.remove('hidden');
-    menuScreen.classList.add('is-active');
-  }, FADE_OUT_DURATION);
+function startIntro() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    finishIntro();
+    return;
+  }
+  introScreen.focus();
 }
 
-// Initialize when page loads
-window.addEventListener('load', initIntro);
-setupSkipIntro();
+introScreen.addEventListener("click", finishIntro);
+document.addEventListener("keydown", (event) => {
+  if (!introFinished && event.key === "Enter") {
+    event.preventDefault();
+    finishIntro();
+  }
+});
+window.addEventListener("load", startIntro, { once: true });
 
 function stopTimer() {
   if (timerInterval !== null) {

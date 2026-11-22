@@ -14,12 +14,15 @@
 </head>
 <body>
   <main id="game">
-    <!-- Intro screen: shows logo first, then fades out to reveal main menu -->
-    <div class="intro-screen" id="intro-screen">
-      <img class="game-logo" src="assets/ui/logo.png" alt="Cafe Rush">
-    </div>
+    <section class="intro-screen" id="intro-screen" aria-label="Cafe Rush intro" tabindex="-1">
+      <img class="intro-logo" src="assets/ui/logo.png" alt="Cafe Rush">
+      <p class="intro-play-hint">
+        <span class="intro-play-hint--desktop">Press Enter to play</span>
+        <span class="intro-play-hint--mobile">Tap to play</span>
+      </p>
+    </section>
 
-    <section class="screen screen--menu" id="menu-screen" aria-labelledby="menu-title">
+    <section class="screen screen--menu" id="menu-screen" aria-labelledby="menu-title" hidden>
       <div class="menu-card">
         <img class="game-logo" src="assets/ui/logo.png" alt="Cafe Rush">
         <p class="menu-kicker">A cozy little coffee shop. A very busy day.</p>
@@ -134,7 +137,7 @@
       <header class="game-hud" aria-label="Shift information">
         <div class="hud-brand">
           <img src="assets/ui/logo.png" alt="" class="hud-logo">
-          <h1 class="visually-hidden" id="gameplay-title">Cafe Rush gameplay</h1>
+          <h1 class="visually-hidden" id="gameplay-title" tabindex="-1">Cafe Rush gameplay</h1>
         </div>
         <div class="hud-stat hud-stat--timer">
           <span class="hud-label">Time</span>

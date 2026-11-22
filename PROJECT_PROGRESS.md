@@ -149,6 +149,9 @@ Cafe Rush is a cozy pixel-art cafe time-management game for desktop browsers. Th
 
 - [x] Create the original minimum customer, UI, and gameplay-effect PNG files listed in `MISSING.md`.
 - [x] Add browser-tab icons with SVG, PNG, and ICO alternatives, plus an Apple touch icon.
+- [x] Repair the game intro, use the cafe scene as a full-screen background, add keyboard/tap-to-play hints, and honor reduced-motion preferences.
+- [x] Remove the extra focus box-shadow that made the Start your shift keyboard outline look doubled.
+- [x] Move initial gameplay focus to its heading instead of the Pause button to avoid a misleading focus outline at shift start.
 - [x] Make student, worker, and regular customer portraits visually distinct.
 - [x] Convert `assets/customers/customer-student.jpeg`, `customer-worker.jpeg`, and `customer-regular.jpeg` to PNG; the original JPEGs are retained.
 - [ ] Integrate remaining artwork and effect animations into gameplay where appropriate.
@@ -181,6 +184,7 @@ Remaining sound effects to add:
 - [x] `node --check script.js` passes.
 - [x] Fixed duplicate sound declarations that caused a JavaScript syntax error and prevented all button handlers from loading.
 - [x] Browser-tested menu, help/high-score dialogs, sound toggle, shift start, ingredient preparation/serving, pause/resume, and return to menu after the fix.
+- [x] Browser-tested the full-screen intro at desktop and mobile sizes, cafe background, responsive Enter/tap hint, Enter/click activation, reduced-motion bypass, and menu flow; no browser console errors.
 - [x] Browser-tested Settings access from the menu, gameplay, and pause dialog; verified slider persistence, focus return, and that gameplay pauses while Settings is open.
 - [x] Browser checks cover core order outcomes, timers/pause, Game Over, local storage, and responsive layout.
 - [x] Browser-tested customer and drink rotation after correct and incorrect serves; consecutive customer types differ.
