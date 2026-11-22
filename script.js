@@ -86,6 +86,18 @@ const backgroundMusic = new Audio("assets/sounds/background-music.mp3");
 backgroundMusic.loop = true;
 backgroundMusic.volume = backgroundMusicVolume;
 
+// Remaining sound effects to integrate
+const correctServeSound = new Audio("assets/sounds/correct-serve.mp3");
+const tipCoinSound = new Audio("assets/sounds/tip-coin.mp3");
+const comboMilestoneSound = new Audio("assets/sounds/combo-milestone.mp3");
+const incorrectOrderSound = new Audio("assets/sounds/incorrect-order.mp3");
+const customerLeavingSound = new Audio("assets/sounds/customer-leaving.mp3");
+const lifeLostSound = new Audio("assets/sounds/life-lost.mp3");
+const lowPatienceSound = new Audio("assets/sounds/low-patience.mp3");
+const shiftOverSound = new Audio("assets/sounds/shift-over.mp3");
+
+function adjustClickSoundVolume(delta) {
+
 function adjustClickSoundVolume(delta) {
   clickSoundVolume = Math.max(0, Math.min(1, clickSoundVolume + delta));
   clickSound.volume = clickSoundVolume;
@@ -367,6 +379,7 @@ function startTimer() {
     updatePatience();
 
     if (patienceSeconds === 0 && remainingSeconds > 0) {
+      lowPatienceSound.play();
       missOrder("The customer ran out of patience. One life was lost.", customerLeavePenalty);
     }
 
@@ -529,12 +542,15 @@ function endShift(message) {
 
   finalHighScoreDisplay.textContent = String(highScore);
   menuHighScore.textContent = String(highScore);
+  shiftOverSound.play();
   showScreen("game-over");
 }
 
 function missOrder(message, penalty = incorrectOrderPenalty) {
   showEffect("effect-leaving");
+  customerLeavingSound.play();
   currentLives = Math.max(0, currentLives - 1);
+  lifeLostSound.play();
   wrongOrderCount += 1;
   currentScore = Math.max(0, currentScore - penalty);
   currentCombo = 0;
@@ -765,6 +781,7 @@ serveButton.addEventListener("click", () => {
 
   if (!isCorrect) {
     showEffect("effect-wrong");
+    incorrectOrderSound.play();
     missOrder(
       "That recipe was incorrect. One life was lost and the combo ended.",
     );
@@ -781,10 +798,16 @@ serveButton.addEventListener("click", () => {
 
   if (isFastService) {
     currentScore += fastServiceBonus;
+    showEffect("effect-correct");
+    tipCoinSound.play();
   }
 
   const comboBonus = comboRewardPoints * currentCombo;
   currentScore += comboBonus;
+
+  if (comboBonus > 0) {
+    comboMilestoneSound.play();
+  }
 
   currentCombo += 1;
   bestCombo = Math.max(bestCombo, currentCombo);
