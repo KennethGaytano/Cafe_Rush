@@ -56,7 +56,7 @@
   }
 
   .game-controls {
-    align-items: flex-start;
+    align-items: center;
     flex-direction: column;
   }
 
@@ -186,6 +186,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
+    justify-content: space-between;
   }
 
   .control-actions .button {
